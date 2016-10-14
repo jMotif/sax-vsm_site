@@ -10,11 +10,10 @@ exclude: [morea]
 morea_theme: spacelab
 morea_navbar_items:
   #- Prerequisites
-  - Algorithm
+  - Modules
   # - Outcomes
-  - Pattern Analysis
-  - Classification
-  - Clustering
+  - Readings
+  - Experiences
   #- Assessments
   #- Schedule
 
