@@ -1,20 +1,21 @@
-name: Morea CORE (Change me)
+name: SAX-VSM
 markdown: kramdown
 kramdown:
   hard_wrap: false
   input: GFM
   syntax_highlighter: rouge
 mathjax: true
-baseurl: /core
+baseurl: /sax-vsm_site
 exclude: [morea]
 morea_theme: spacelab
 morea_navbar_items:
   #- Prerequisites
-  - Modules
-  - Outcomes
-  - Readings
-  - Experiences
-  - Assessments
+  - Algorithm
+  # - Outcomes
+  - Pattern Analysis
+  - Classification
+  - Clustering
+  #- Assessments
   #- Schedule
 
 # The following properties are optional.
