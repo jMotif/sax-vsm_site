@@ -11,7 +11,7 @@ morea_labels:
 
 # _Z_-normalization of time series.
 
-**_Z_-normalization**, also known as **"Normalization to Zero Mean and Unit of Energy"**, was first mentioned by Goldin & Kanellakis. The procedure ensures, that all elements of the input vector are transformed into the output vector whose mean is approximately 0 while the standard deviation is in a range close to 1. The formula behind the transform is shown below:
+**_Z_-normalization**, also known as **"Normalization to Zero Mean and Unit of Energy"**, was first mentioned by <a href="https://github.com/jMotif/sax-vsm_site/raw/gh-pages/morea/assets/cp95.pdf">Goldin & Kanellakis</a>. The procedure ensures, that all elements of the input vector are transformed into the output vector whose mean is approximately 0 while the standard deviation is in a range close to 1. The formula behind the transform is shown below:
 
 $$x^{'}_{i}=\frac{x_{i}-\mu}{\sigma}, \text{ where } i \in \mathbb{N}$$
 
