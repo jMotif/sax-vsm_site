@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Prerequisites | SAX-VSM </title>
+  <title> Time series motif discovery. | SAX-VSM </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
 
@@ -62,22 +62,66 @@
 </div>
 
 
-
 <div class="breadcrumb-bar">
   <div class="container">
     <ol class="breadcrumb">
-        
+      
       <li><a href="/sax-vsm_site/">Home</a></li>
-      <li class="active">Prerequisites</li>
+      <li><a href="/sax-vsm_site/modules">Modules</a></li>
+      <li><a href="/sax-vsm_site/modules/patterns">Patterns discovery</a></li>
+      <li class="active">Time series motif discovery.</li>
     </ol>
   </div>
 </div>
 
+
 <div class="container">
-  <h1>Prerequisites <small>in module order</small></h1>
+  <h1 id="finding-recurrent-patterns-in-time-series-using-sax">Finding recurrent patterns in time series using SAX.</h1>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>For this example I use one of the datasets from <a href="http://www.cs.ucr.edu/~eamonn/time_series_data/">The UCR Time Series Classification/Clustering page &amp; collection of test datasets</a> - <a href="http://www.cs.ucr.edu/~eamonn/discords/qtdbsele0606.txt">this one</a> which represents excerpt of two-channel ECG Holter recording. The figure below shows the normalized fragment (from 4779 to 7779) of the heartbeat series:</p>
+
+<p>http://jmotif.googlecode.com/svn/trunk/RCode/motifs/raw_heartbeat.png</p>
+
+<p>The call of <code class="highlighter-rouge">SAXFactory.seriesToDiscordsAndMotifs</code> allows to find motifs with JMotif library in a single code line:
+```
+  public static void main(String[args) throws Exception {</p>
+
+<div class="highlighter-rouge">Instances tsData = readTSData();
+
+DiscordsAndMotifs dr = SAXFactory.seriesToDiscordsAndMotifs(toDoubleSeries(tsData), windowSize,
+    alphabetSize, 2, 2);
+
+System.out.println(dr.toString());
 </div>
 
+<p>}
+```</p>
 
+<p>(The full code to get instances and convert into double is here <a href="]">http://jmotif.googlecode.com/svn-history/r368/trunk/src/edu/hawaii/jmotif/webexample/MotifsDiscordsExample.java MotifsDiscordsExample.java</a>)
+The output of this code when applied to the plotted segment of heartbeat series is like this: 
+```
+Motifs, as a list <frequency> [<offset1>,...,<offsetn>], from last to first:
+51 at [122, 123, 124, 422, 423, 570, 571, ...
+57 at [106, 107, 108, 109, 110, 257, 258, ...</offsetn></offset1></frequency></p>
+
+<p>Discords, as a list <distance> <offset>, from last to first:
+4.214421668509215 at 2305
+6.7017497715148995 at 2019
+```</offset></distance></p>
+
+<p>which informs us about two top motifs and two top discords which are highlighted in two figures below:</p>
+
+<p>http://jmotif.googlecode.com/svn/trunk/RCode/motifs/motifs_heartbeat.png</p>
+
+<p>here I highlighted all of the occurrences of the first motif which was observed <code class="highlighter-rouge">57</code> times at <code class="highlighter-rouge">[106, 107, 108, 109, 110, 257, 258, ... </code>. Note that this method reports all of the motif’ occurrences so you might want to perform some reduction, like to reduce <code class="highlighter-rouge">106, 107, 108, 109 &amp; 110</code> to <code class="highlighter-rouge">106</code> - the very first occurrence, etc.</p>
+
+<p>http://jmotif.googlecode.com/svn/trunk/RCode/motifs/discord_motifs_heartbeat.png</p>
+
+<p>here I highlighted the first discord occurrence in addition to the first motif occurences.</p>
+
+</div>
 
 
 

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Symbolic Aggregate Approximation (SAX) | SAX-VSM </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+
+  <!--  Load bootswatch-based Morea theme file. -->
+  <link rel="stylesheet" href="/sax-vsm_site/css/themes/spacelab/bootstrap.min.css">
+  <link rel="stylesheet" href="/sax-vsm_site/css/style.css">
+  <link rel="stylesheet" href="/sax-vsm_site/css/syntax.css">
+  <link rel="shortcut icon" href="/sax-vsm_site/favicon.ico" type="image/x-icon"/>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.2.0/respond.js"></script>
+  <![endif]-->
+
+  <!-- Load Bootstrap JavaScript components -->
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  
+  <script type="text/javascript"
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  
+
+  <script>
+    $(window).load(function () {
+      // If on a page associated with a navbar item, make its navbar item 'active'.
+      $('.navbar-nav').find('a[href="' + location.pathname + '"]').parents('li').addClass('active');
+    });
+  </script>
+
+</head>
+<body>
+<!-- Responsive navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <!--  Display three horizontal lines when navbar collapsed. -->
+        <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/sax-vsm_site/index.html"> SAX-VSM </a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        
+        <li><a href="/sax-vsm_site/modules/">Modules</a></li>
+        
+        
+        
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="breadcrumb-bar">
+  <div class="container">
+    <ol class="breadcrumb">
+      
+      <li><a href="/sax-vsm_site/">Home</a></li>
+      <li><a href="/sax-vsm_site/modules">Modules</a></li>
+      <li><a href="/sax-vsm_site/modules/algorithm">Algorithms</a></li>
+      <li class="active">Symbolic Aggregate Approximation (SAX)</li>
+    </ol>
+  </div>
+</div>
+
+
+<div class="container">
+  <h1 id="symbolic-aggregate-approximation">Symbolic Aggregate approXimation.</h1>
+
+<h3 id="introduction">Introduction</h3>
+<p>In short, Symbolic Aggregate approXimation (SAX) algorithm application to the input time series transforms its into a strings.</p>
+
+<p>The algoithm was proposed by <a href="http://www.cs.ucr.edu/~eamonn/SAX.htm">Lin et al.</a>) and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and <a href="http://grammarviz2.github.io/grammarviz2_site/">grammatical inference</a>.</p>
+
+<h3 id="the-algorithm">The algorithm</h3>
+<p>SAX transforms a time-series <em>X</em> of length <em>n</em> into the string of arbitrary length $\omega$, where $\omega « n$ typically, using an alphabet <em>A</em> of size <em>a &gt; 2</em>. The algorithm consist of two steps: (i) it transforms the original time-series into the <a href="PAA.html">PAA representation</a> and (ii) it converts the PAA data into a string.</p>
+
+<p>The use of PAA brings advantages of a simple and efficient dimensionality reduction while providing the important lower bounding property. The actual conversion of PAA coefficients into letters by using a lookup table is also computationally efficient and the contractive property of symbolic distance was proven by Lin et al.</p>
+
+<p>Discretization of the PAA representation of a time-series into SAX is implemented in a way which produces symbols corresponding to the time-series features with equal probability. The extensive and rigorous analysis of various time-series datasets available to the original algorithm’s authors has shown that the values of <a href="znorm.html"><em>z</em>-normalized</a> time-series  follow the Normal distribution. By using its properties it’s easy to pick <em>a</em> equal-sized areas under the Normal curve using lookup tables for the cut lines coordinates, slicing the under-the-Gaussian-curve area.</p>
+
+<p>The <em>x</em> coordinates of these lines called <em>breakpoints</em> or <em>cuts</em> in the SAX context. The list of breakpoints $ B = \beta_{1}, \beta_{2} ,…, \beta_{a-1} $ such that $\beta_{i-1}&lt;\beta_{i}$ and $\beta_{0}=-\infty$, $\beta_{a}=\infty$ divides the area under <em>N(0,1)</em> into <em>a</em> equal areas. By assigning a corresponding alphabet symbol $alpha_{j}$ to each interval $[\beta_{j-1},\beta_{j})$, the conversion of the vector of PAA coefficients $\bar{C}$ into the string $\hat{C}$ implemented as follows:</p>
+
+<script type="math/tex; mode=display">\hat{c} * {i} = alpha * {j}, \; \text{iif}, \; \bar{c}*{i} \in [ \beta_{j-1}, \beta_{j} )</script>
+
+<p>SAX introduces new metrics for measuring distance between strings by extending Euclidean and PAA distances.
+The function returning the minimal distance between two string representations of original time series $\hat{Q}$ and $\hat{C}$ is defined as</p>
+
+<script type="math/tex; mode=display">MINDIST(\hat{Q},\hat{C})\equiv\sqrt{\frac{n}{w}}\sqrt{\sum_{i=1}^{w}(dist(\hat{q}*{i},\hat{c}*{i}))^{2}}</script>
+
+<p>where the <em>dist</em> function is implemented by using the lookup table for the particular set of the breakpoints (alphabet size) as shown
+in the Table below, and where the singular value for each cell <em>(r,c)</em> is computed as</p>
+
+<script type="math/tex; mode=display">cell\_{(r,c)} = \begin{cases} 0, \text{if} \left|r-c \right| \leq 1 \\ \beta_{\max(r,c)-1} - \beta_{\min(r,c)-1}, \text{otherwise}\end{cases}</script>
+
+<p><strong>The lookup table for 4-letters alphabet</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">     </th>
+      <th style="text-align: center">     a     </th>
+      <th style="text-align: center">     b     </th>
+      <th style="text-align: center">     c     </th>
+      <th style="text-align: center">     d     </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">a</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0.67</td>
+      <td style="text-align: center">1.34</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">b</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0.67</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">c</td>
+      <td style="text-align: center">0.67</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">d</td>
+      <td style="text-align: center">1.34</td>
+      <td style="text-align: center">0.67</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As shown by Li et al, this SAX distance metrics lower-bounds the PAA distance, i.e.</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^{n}(q_{i}-c_{i})^{2} \geq n(\bar{Q}-\bar{C})^{2} \geq n(dist(\hat{Q},\hat{C}))^2</script>
+
+<p>The SAX lower bound was examined by Ding et al in great detail and found to be superior in precision to the spectral decomposition methods on bursty (non-periodic) data sets.</p>
+
+<h3 id="sax-primer">SAX primer</h3>
+
+<h3 id="timeseries-data"><em>1.0 Timeseries data</em></h3>
+
+<p>I will use following time series for this example (the Euclidean distance between ts1 and ts2 is 11.4):</p>
+
+<pre>
+&gt; ts1=c(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34)
+&gt; ts2=c(0.50, 1.29, 2.58, 3.83, 3.25, 4.25, 3.83, 5.63, 6.44, 6.25, 8.75, 8.83, 3.25, 0.75, 0.72)
+&gt; dist(rbind(ts1,ts2), method = "euclidean")
+         ts1
+ts2 11.42126
+</pre>
+
+<p><img src="../assets/sax_data.png" alt="" /></p>
+
+<p><strong>which I’ll transform into strings of length 9 whose letters come from an alphabet of size 4</strong></p>
+
+<h3 id="z-normalization"><em>2.0 Z-normalization</em></h3>
+
+<p>Before transforming timeseries with SAX we <em>Z</em>-normalize data first:</p>
+
+<pre>
+znorm &lt;- function(ts){
+  ts.mean &lt;- mean(ts)
+  ts.dev &lt;- sd(ts)
+  (ts - ts.mean)/ts.dev
+}
+
+ts1_znorm=znorm(ts1)
+ts2_znorm=znorm(ts2)
+</pre>
+
+<p><img src="../assets/sax_znorm.png" alt="" /></p>
+
+<p><a href="PAA.html">PAA</a> follows the standard procedure:</p>
+
+<h3 id="paa-transform"><em>3.0 PAA transform</em></h3>
+
+<p>PAA</p>
+<pre>
+paa &lt;- function(ts, paa_size){
+  len = length(ts)
+  if (len == paa_size) {
+    ts
+  }
+  else {
+    if (len %% paa_size == 0) {
+      colMeans(matrix(ts, nrow=len %/% paa_size, byrow=F))
+    }
+    else {
+      res = rep.int(0, paa_size)
+      for (i in c(0:(len * paa_size - 1))) {
+        idx = i %/% len + 1# the spot
+        pos = i %/% paa_size + 1 # the col spot
+        res[idx] = res[idx] + ts[pos]
+      }
+      for (i in c(1:paa_size)) {
+        res[i] = res[i] / len
+      }
+      res
+    }
+  }
+}
+paa_size=9
+s1_paa = paa(ts1_znorm,paa_size)
+s2_paa = paa(ts2_znorm,paa_size)
+</pre>
+
+<p><img src="../assets/sax_paa1.png" alt="" /></p>
+
+<h3 id="paa-values-to-letters"><em>4.0 PAA values to letters</em></h3>
+
+<p>I use the 4 symbols alphabet {a,b,c,d} as in the table above. The cut lines for this alphabet shown as the thin blue lines on the plot below.</p>
+
+<p><img src="../assets/sax_distances.png" alt="" /></p>
+
+<p>SAX transform of ts1 into string through 9-points PAA: “abddccbaa”</p>
+
+<p>SAX transform of ts2 into string through 9-points PAA: “abbccddba”</p>
+
+<p>SAX distance: 0 + 0 + 0.67 + 0 + 0 + 0 + 0.67 + 0 + 0 = 1.34</p>
+
+<p><em>At the plot, orange color depicts symbols distance between which is counted - they are not “adjacent” to each other in the table.</em></p>
+
+</div>
+
+
+
+
+<script src="/sax-vsm_site/js/scrollIfAnchor.js"></script>
+
+<div class="footer-background hidden-print">
+  <footer>
+    <div class="container page-footer">
+      
+      <p>Contact: <a href="http://www2.hawaii.edu/~senin">Pavel Senin,</a> <a href="mailto:#">seninp@gmail.com</a><br /></p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-61778427-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=10387768; 
+var sc_invisible=1; 
+var sc_security="2bea163d"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+
+<noscript><div class="statcounter"><a title="shopify visitor
+statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/10387768/0/2bea163d/1/" alt="shopify visitor statistics" /></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
+      
+      <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
+        Last update on: <span>2016-10-14 14:38:54 -0600</span></p>
+
+      <p style="margin: 0">
+        
+        4 modules
+        
+        
+        
+        
+      </p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

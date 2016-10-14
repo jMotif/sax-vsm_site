@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Prerequisites | SAX-VSM </title>
+  <title> Z-normalization | SAX-VSM </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
 
@@ -62,22 +62,61 @@
 </div>
 
 
-
 <div class="breadcrumb-bar">
   <div class="container">
     <ol class="breadcrumb">
-        
+      
       <li><a href="/sax-vsm_site/">Home</a></li>
-      <li class="active">Prerequisites</li>
+      <li><a href="/sax-vsm_site/modules">Modules</a></li>
+      <li><a href="/sax-vsm_site/modules/algorithm">Algorithms</a></li>
+      <li class="active">Z-normalization</li>
     </ol>
   </div>
 </div>
 
+
 <div class="container">
-  <h1>Prerequisites <small>in module order</small></h1>
+  <h1 id="z-normalization-of-time-series"><em>Z</em>-normalization of time series.</h1>
+
+<p><strong><em>Z</em>-normalization</strong>, also known as <strong>“Normalization to Zero Mean and Unit of Energy”</strong>, was first mentioned by Goldin &amp; Kanellakis. The procedure ensures, that all elements of the input vector are transformed into the output vector whose mean is approximately 0 while the standard deviation is in a range close to 1. The formula behind the transform is shown below:</p>
+
+<script type="math/tex; mode=display">x^{'}_{i}=\frac{x_{i}-\mu}{\sigma}, \text{ where } i \in \mathbb{N}</script>
+
+<p>As shown, the time series mean is subtracted from original values at first, and the difference is divided by the standard deviation value second. According to most of the recent work concerned with time series mining, <em>z</em>-normalization is an essential preprocessing step which allows an algorithm to focus on the structural similarities/dissimilarities rather than on the amplitude.</p>
+
+<p>Note however, that in some cases, this preprocessing is not recommended as it introduces biases. For example, if the signal variance is significantly small, <em>z</em>-normalization will simply overamplify the noise to the unit of amplitude. Yet another extreme case is when a time series contains the same values and the standard deviation is not defined.</p>
+
+<h2 id="example">Example:</h2>
+<p>An example below demonstrates the highly desirable property of <em>z</em>-normalization: whereas the raw time series look significantly different, their <em>z</em>-normalized versions are highly similar.</p>
+
+<h3 id="example-the-raw-time-series">Example: The raw time series</h3>
+
+<pre>
+series1 &lt;- c(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34) 
+series2 &lt;- c(-0.12, -0.16, -0.13,  0.28,  0.37,  0.39,  0.18,  0.09,  0.15, -0.06,  0.06, -0.07, -0.13, -0.18, -0.26) 
+</pre>
+
+<p><img src="../assets/raw_data.png" alt="" /></p>
+
+<p><em>z</em>-normalization can be coded as a simple R function:</p>
+
+<pre>
+znorm &lt;- function(ts){
+  ts.mean &lt;- mean(ts)
+  ts.dev &lt;- sd(ts)
+  (ts - ts.mean)/ts.dev
+}
+
+s1_znorm=znorm(series1)
+s2_znorm=znorm(series2)
+</pre>
+
+<h3 id="example-time-series-after-z-normalization">Example: time series after <em>Z</em>-normalization</h3>
+
+<p><img src="../assets/znormalized_data.png" alt="" /></p>
+
+
 </div>
-
-
 
 
 
