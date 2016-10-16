@@ -12,7 +12,7 @@ morea_labels:
 
 # Piecewise Aggregate Approximation of time series
 
-PAA approximates a time-series *X* of length *n* into vector $\bar{X}=(\bar{x}\_{1},...,\bar{x}\_{M})$ of any arbitrary length $ M \leq n $ where each of $ \bar{x\_{i}} $ is calculated as follows:
+PAA approximates a time-series *X* of length *n* into vector \\( \bar{X}=(\bar{x}\_{1},...,\bar{x}\_{M}) \\) of any arbitrary length \\( M \leq n \\) where each of \\( \bar{x\_{i}} \\) is calculated as follows:
 
 $$ \bar{x}_{i} = \frac{M}{n} \sum_{j=n/M(i-1)+1}^{(n/M)i} x_{j} $$
 
