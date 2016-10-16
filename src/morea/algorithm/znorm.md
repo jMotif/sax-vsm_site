@@ -15,9 +15,9 @@ morea_labels:
 
 $$x^{'}_{i}=\frac{x_{i}-\mu}{\sigma}, \text{ where } i \in \mathbb{N}$$
 
-As shown, the time series mean is subtracted from original values at first, and the difference is divided by the standard deviation value second. According to most of the recent work concerned with time series mining, _z_-normalization is an essential preprocessing step which allows an algorithm to focus on the structural similarities/dissimilarities rather than on the amplitude.
+First, the time series mean is subtracted from original values, and second, the difference is divided by the standard deviation value. According to most of the recent work concerned with time series _structural pattern_ mining, _z_-normalization is an essential preprocessing step which allows a mining algorithm to focus on the structural similarities/dissimilarities rather than on the amplitude-driven ones.
 
-Note however, that in some cases, this preprocessing is not recommended as it introduces biases. For example, if the signal variance is significantly small, _z_-normalization will simply overamplify the noise to the unit of amplitude. Yet another extreme case is when a time series contains the same values and the standard deviation is not defined.
+Note, however, that in some cases, this preprocessing is not recommended as it introduces biases. For example, if the signal variance is significantly small, _z_-normalization will simply overamplify the noise to the unit of amplitude. Yet another extreme case is when a time series contains the same values and the standard deviation is not defined.
 
 ## Example:
 An example below demonstrates the highly desirable property of _z_-normalization: whereas the raw time series look significantly different, their _z_-normalized versions are highly similar.
