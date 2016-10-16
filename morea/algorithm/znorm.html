@@ -86,9 +86,9 @@
 
 <script type="math/tex; mode=display">x^{'}_{i}=\frac{x_{i}-\mu}{\sigma}, \text{ where } i \in \mathbb{N}</script>
 
-<p>As shown, the time series mean is subtracted from original values at first, and the difference is divided by the standard deviation value second. According to most of the recent work concerned with time series mining, <em>z</em>-normalization is an essential preprocessing step which allows an algorithm to focus on the structural similarities/dissimilarities rather than on the amplitude.</p>
+<p>First, the time series mean is subtracted from original values, and second, the difference is divided by the standard deviation value. According to most of the recent work concerned with time series <em>structural pattern</em> mining, <em>z</em>-normalization is an essential preprocessing step which allows a mining algorithm to focus on the structural similarities/dissimilarities rather than on the amplitude-driven ones.</p>
 
-<p>Note however, that in some cases, this preprocessing is not recommended as it introduces biases. For example, if the signal variance is significantly small, <em>z</em>-normalization will simply overamplify the noise to the unit of amplitude. Yet another extreme case is when a time series contains the same values and the standard deviation is not defined.</p>
+<p>Note, however, that in some cases, this preprocessing is not recommended as it introduces biases. For example, if the signal variance is significantly small, <em>z</em>-normalization will simply overamplify the noise to the unit of amplitude. Yet another extreme case is when a time series contains the same values and the standard deviation is not defined.</p>
 
 <h2 id="example">Example:</h2>
 <p>An example below demonstrates the highly desirable property of <em>z</em>-normalization: whereas the raw time series look significantly different, their <em>z</em>-normalized versions are highly similar.</p>
@@ -160,7 +160,7 @@ statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="s
 
       
       <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
-        Last update on: <span>2016-10-14 16:27:47 -0600</span></p>
+        Last update on: <span>2016-10-16 08:13:32 -0600</span></p>
 
       <p style="margin: 0">
         
