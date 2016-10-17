@@ -88,18 +88,18 @@
 <p>The algoithm was proposed by <a href="http://www.cs.ucr.edu/~eamonn/SAX.htm">Lin et al.</a>) and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and <a href="http://grammarviz2.github.io/grammarviz2_site/">grammatical inference</a>.</p>
 
 <h3 id="the-algorithm">The algorithm</h3>
-<p>SAX transforms a time-series <em>X</em> of length <em>n</em> into the string of arbitrary length $\omega$, where $\omega « n$ typically, using an alphabet <em>A</em> of size <em>a &gt; 2</em>. The algorithm consist of two steps: (i) it transforms the original time-series into the <a href="PAA.html">PAA representation</a> and (ii) it converts the PAA data into a string.</p>
+<p>SAX transforms a time-series <em>X</em> of length <em>n</em> into the string of arbitrary length \(\omega\), where \(\omega « n\) typically, using an alphabet <em>A</em> of size <em>a &gt; 2</em>. The algorithm consist of two steps: (i) it transforms the original time-series into the <a href="PAA.html">PAA representation</a> and (ii) it converts the PAA data into a string.</p>
 
 <p>The use of PAA brings advantages of a simple and efficient dimensionality reduction while providing the important lower bounding property. The actual conversion of PAA coefficients into letters by using a lookup table is also computationally efficient and the contractive property of symbolic distance was proven by Lin et al.</p>
 
 <p>Discretization of the PAA representation of a time-series into SAX is implemented in a way which produces symbols corresponding to the time-series features with equal probability. The extensive and rigorous analysis of various time-series datasets available to the original algorithm’s authors has shown that the values of <a href="znorm.html"><em>z</em>-normalized</a> time-series  follow the Normal distribution. By using its properties it’s easy to pick <em>a</em> equal-sized areas under the Normal curve using lookup tables for the cut lines coordinates, slicing the under-the-Gaussian-curve area.</p>
 
-<p>The <em>x</em> coordinates of these lines called <em>breakpoints</em> or <em>cuts</em> in the SAX context. The list of breakpoints $ B = \beta_{1}, \beta_{2} ,…, \beta_{a-1} $ such that $\beta_{i-1}&lt;\beta_{i}$ and $\beta_{0}=-\infty$, $\beta_{a}=\infty$ divides the area under <em>N(0,1)</em> into <em>a</em> equal areas. By assigning a corresponding alphabet symbol $alpha_{j}$ to each interval $[\beta_{j-1},\beta_{j})$, the conversion of the vector of PAA coefficients $\bar{C}$ into the string $\hat{C}$ implemented as follows:</p>
+<p>The <em>x</em> coordinates of these lines called <em>breakpoints</em> or <em>cuts</em> in the SAX context. The list of breakpoints \(B = \beta_{1}, \beta_{2} ,…, \beta_{a-1} \) such that \(\beta_{i-1}&lt;\beta_{i}\) and \(\beta_{0}=-\infty\), \(\beta_{a}=\infty\) divides the area under <em>N(0,1)</em> into <em>a</em> equal areas. By assigning a corresponding alphabet symbol \(alpha_{j}\) to each interval \([\beta_{j-1},\beta_{j})\), the conversion of the vector of PAA coefficients \(\bar{C}\) into the string \(\hat{C}\) implemented as follows:</p>
 
 <script type="math/tex; mode=display">\hat{c} * {i} = alpha * {j}, \; \text{iif}, \; \bar{c}*{i} \in [ \beta_{j-1}, \beta_{j} )</script>
 
 <p>SAX introduces new metrics for measuring distance between strings by extending Euclidean and PAA distances.
-The function returning the minimal distance between two string representations of original time series $\hat{Q}$ and $\hat{C}$ is defined as</p>
+The function returning the minimal distance between two string representations of original time series \(\hat{Q}\) and \(\hat{C}\) is defined as</p>
 
 <script type="math/tex; mode=display">MINDIST(\hat{Q},\hat{C})\equiv\sqrt{\frac{n}{w}}\sqrt{\sum_{i=1}^{w}(dist(\hat{q}*{i},\hat{c}*{i}))^{2}}</script>
 
@@ -283,7 +283,7 @@ statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="s
 
       
       <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
-        Last update on: <span>2016-10-16 22:00:56 -0600</span></p>
+        Last update on: <span>2016-10-16 22:05:09 -0600</span></p>
 
       <p style="margin: 0">
         
