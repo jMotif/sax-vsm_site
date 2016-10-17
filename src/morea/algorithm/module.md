@@ -7,6 +7,8 @@ morea_readings:
  - znorm
  - PAA
  - SAX 
+ - SlidingWindowSAX
+ - NumerosityReduction
  - TFIDF 
  - Cosine 
  - SAXVSM

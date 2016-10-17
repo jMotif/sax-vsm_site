@@ -32,6 +32,7 @@ morea_type: home
      <li><a href="morea/algorithm/PAA.html">PAA: Piecewise Aggregate Approximation of time series</a></li>
      <li><a href="morea/algorithm/SAX.html">SAX: Symbolic Aggregate Approximation of time series</a></li>
      <li><a href="morea/algorithm/SlidingWindowSAX.html">Time series discretization via sliding window</a></li>
+     <li><a href="morea/algorithm/NumerosityReduction.html">SAX discretization numerosity reduction</a></li>
     </ul>
             
     <h4>Vector space model (VSM):</h4>
