@@ -7,8 +7,10 @@ morea_readings:
  - znorm
  - PAA
  - SAX 
+ - TFIDF 
+ - Cosine 
+ - SAXVSM
 morea_experiences:
- - experience-a1
 morea_type: module
 morea_icon_url: /morea/algorithm/algorithms-logo.png
 morea_labels:
