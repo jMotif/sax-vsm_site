@@ -17,18 +17,18 @@ In short, Symbolic Aggregate approXimation (SAX) algorithm application to the in
 The algoithm was proposed by [Lin et al.](http://www.cs.ucr.edu/~eamonn/SAX.htm)) and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and [grammatical inference](http://grammarviz2.github.io/grammarviz2_site/).
 
 ### The algorithm
-SAX transforms a time-series *X* of length *n* into the string of arbitrary length $\omega$, where $\omega << n$ typically, using an alphabet *A* of size *a > 2*. The algorithm consist of two steps: (i) it transforms the original time-series into the [PAA representation](PAA.html) and (ii) it converts the PAA data into a string.
+SAX transforms a time-series *X* of length *n* into the string of arbitrary length \\(\omega\\), where \\(\omega << n\\) typically, using an alphabet *A* of size *a > 2*. The algorithm consist of two steps: (i) it transforms the original time-series into the [PAA representation](PAA.html) and (ii) it converts the PAA data into a string.
 
 The use of PAA brings advantages of a simple and efficient dimensionality reduction while providing the important lower bounding property. The actual conversion of PAA coefficients into letters by using a lookup table is also computationally efficient and the contractive property of symbolic distance was proven by Lin et al.
 
 Discretization of the PAA representation of a time-series into SAX is implemented in a way which produces symbols corresponding to the time-series features with equal probability. The extensive and rigorous analysis of various time-series datasets available to the original algorithm's authors has shown that the values of [_z_-normalized](znorm.html) time-series  follow the Normal distribution. By using its properties it's easy to pick *a* equal-sized areas under the Normal curve using lookup tables for the cut lines coordinates, slicing the under-the-Gaussian-curve area.
 
-The *x* coordinates of these lines called _breakpoints_ or _cuts_ in the SAX context. The list of breakpoints $ B = \beta\_{1}, \beta\_{2} ,..., \beta\_{a-1} $ such that $\beta\_{i-1}<\beta\_{i}$ and $\beta\_{0}=-\infty$, $\beta\_{a}=\infty$ divides the area under *N(0,1)* into *a* equal areas. By assigning a corresponding alphabet symbol $alpha\_{j}$ to each interval $[\beta\_{j-1},\beta\_{j})$, the conversion of the vector of PAA coefficients $\bar{C}$ into the string $\hat{C}$ implemented as follows:
+The *x* coordinates of these lines called _breakpoints_ or _cuts_ in the SAX context. The list of breakpoints \\(B = \beta\_{1}, \beta\_{2} ,..., \beta\_{a-1} \\) such that \\(\beta\_{i-1}<\beta\_{i}\\) and \\(\beta\_{0}=-\infty\\), \\(\beta\_{a}=\infty\\) divides the area under *N(0,1)* into *a* equal areas. By assigning a corresponding alphabet symbol \\(alpha\_{j}\\) to each interval \\([\beta\_{j-1},\beta\_{j})\\), the conversion of the vector of PAA coefficients \\(\bar{C}\\) into the string \\(\hat{C}\\) implemented as follows:
 
 $$ \hat{c} * {i} = alpha * {j}, \; \text{iif}, \; \bar{c}*{i} \in [ \beta_{j-1}, \beta_{j} ) $$
 
 SAX introduces new metrics for measuring distance between strings by extending Euclidean and PAA distances.
-The function returning the minimal distance between two string representations of original time series $\hat{Q}$ and $\hat{C}$ is defined as
+The function returning the minimal distance between two string representations of original time series \\(\hat{Q}\\) and \\(\hat{C}\\) is defined as
 
 $$MINDIST(\hat{Q},\hat{C})\equiv\sqrt{\frac{n}{w}}\sqrt{\sum_{i=1}^{w}(dist(\hat{q}*{i},\hat{c}*{i}))^{2}}$$
 
