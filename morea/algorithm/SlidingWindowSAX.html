@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Piecewise Aggregate Approximation (PAA) | SAX-VSM </title>
+  <title> Time series discretization via sliding window | SAX-VSM </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
 
@@ -72,15 +72,33 @@
       
       <li><a href="/sax-vsm_site/">Home</a></li>
       <li><a href="/sax-vsm_site/modules">Modules</a></li>
-      <li><a href="/sax-vsm_site/modules/"></a></li>
-      <li class="active">Piecewise Aggregate Approximation (PAA)</li>
+      <li><a href="/sax-vsm_site/modules/algorithm">Algorithms</a></li>
+      <li class="active">Time series discretization via sliding window</li>
     </ol>
   </div>
 </div>
 
 
 <div class="container">
-  <h3 id="todo">TODO</h3>
+  <h2 id="definitions">Definitions</h2>
+
+<h4 id="time-series">Time series</h4>
+<p>Time series \(T = t_{1},\dots,t_{m}\) is a set of scalar observations ordered by time. Since we focus on the detection of anomalous patterns, which are likely to be local features, we consider short subsections of time series called subsequences:</p>
+
+<h4 id="subsequence">Subsequence</h4>
+<p>Subsequence \(C\) of time series \(T\) is a contiguous sampling \(t_{p},\dots,t_{p+n-1}\) of points of length \(n « m\) where \(p\) is an arbitrary position, such that \( 1 \leq p \leq m - n + 1\). Typically subsequences are extracted from a time series with the use of a sliding window:</p>
+
+<h4 id="sliding-window">Sliding window</h4>
+<p>Sliding window subsequence extraction: for a time series \(T\) of length \(m\), and a user-defined subsequence length \(n\), all possible subsequences of \(T\) can be found by sliding a window of size \(n\) across \(T\).</p>
+
+<h2 id="discretization-via-sliding-window">Discretization via sliding window</h2>
+<p>While by discretizing the input time series as a whole (i.e., global discretization) we can discover repeated and rare patterns (i.e., frequent and rare letter correlations) we found that the subsequence-based technique is more precise and advantegeous in identification of a local phenomenon. Thus, we apply SAX to the input time series subsequences extracted via a sliding window. As discussed in other modules (<a href="morea/algorithm/znorm.html">Z normalization</a>, <a href="morea/algorithm/PAA.html">PAA</a>, and <a href="morea/algorithm/SAX.html">SAX</a>), for each of the sliding window-extracted subsequences SAX discretization performed by: (i) dividing <em>z</em>-normalized subsequence into \(w\) equal-sized segments, (ii) computing a mean value for each of the segments, and (iii) mapping it to symbols according to a pre-defined set of breakpoints dividing the distribution space into \(\alpha\) equiprobable regions, where \(\alpha\) is the alphabet size specified by the user. This <em>subsequence discretization</em> process outputs an ordered set of SAX words, where each word corresponds to the leftmost point of the sliding window, and which we usually process with numerosity reduction at the next step.</p>
+
+<p>As an example, consider the sequence \(S_{1}\) where each word (e.g. ((aac\)) represents a subsequence extracted from the original time series via a sliding window and discretized with SAX (the subscript following each word denotes the starting position of the corresponding subsequence in the time series):</p>
+
+<script type="math/tex; mode=display">S_{1}= aac_{1}\, aac_{2}\, abc_{3}\, abb_{4}\, acd_{5}\, aac_{6}\, aac_{7}\, aac_{8}\, abc_{9}\, \dots</script>
+
+<p>Continue to the <a href="NumerosityReduction.html">SAX discretization numerosity reduction</a> module…</p>
 
 </div>
 
@@ -122,14 +140,14 @@ statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="s
 
       
       <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
-        Last update on: <span>2016-10-17 16:11:36 -0600</span></p>
+        Last update on: <span>2016-10-17 17:25:19 -0600</span></p>
 
       <p style="margin: 0">
         
         4 modules
         
         
-        | 10 readings
+        | 11 readings
         
         
         | 0 experiences
