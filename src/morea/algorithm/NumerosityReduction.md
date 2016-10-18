@@ -10,7 +10,7 @@ morea_labels:
 ---
 ## Numerosity Reduction
 
-As it has been shown previously, neighboring subsequences extracted via sliding window are often similar to each other. When combined with the smoothing properties of SAX, this phenomenon persists through the discretization, resulting in a large number of consecutive SAX words that are identical. Later, these yield a large number of trivial matches, which significantly affect performance of algorithms built upon SAX. To address this issue, a numerosity reduction strategy is usually employed: if in the course of discretization, the same SAX word occurs more than once consecutively, instead of placing every instance into the resulting string, we record only its first occurrence. Applied to \\(S1\\)
+As it has been shown previously, neighboring subsequences extracted via sliding window are often similar to each other. When combined with the smoothing properties of SAX, this phenomenon persists through the discretization, resulting in a large number of consecutive SAX words that are identical. Later, these yield a large number of trivial matches, which significantly affect performance of algorithms built upon SAX. To address this issue, a numerosity reduction strategy is usually employed: if in the course of discretization, the same SAX word occurs more than once consecutively, instead of placing every instance into the resulting string, we record only its first occurrence. Applied to \\(S_{1}\\)
 
 $$ S_{1}= aac_{1}\, aac_{2}\, abc_{3}\, abb_{4}\, acd_{5}\, aac_{6}\, aac_{7}\, aac_{8}\, abc_{9}\, \dots $$
 
