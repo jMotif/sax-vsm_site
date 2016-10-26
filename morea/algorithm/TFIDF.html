@@ -82,6 +82,34 @@
 <div class="container">
   <h1 id="term-frequency---inverse-document-frequency-statistics">Term Frequency - Inverse Document Frequency statistics</h1>
 
+<p>We use the vector space model exactly as it is known in Information Retrieval (Salton). Similarly, we define and use the following expressions: <em>term</em> - a single SAX word, <em>bag of words</em> - an unordered collection of SAX words, <em>corpus</em> - a set of bags, and <em>weight matrix</em> - a matrix defining weights of all words in a corpus.</p>
+
+<p>Given a training set, SAX-VSM builds a bag of SAX words for each of the classes by processing each of the input time series with sliding window-based SAX discretization. Bags are combined into a corpus, which is built as a <em>term frequency matrix</em>, whose
+rows correspond to the set of all SAX words (terms) found in <em>all classes</em>, whereas each column denotes a class of the training set. 
+Each element of this matrix is an observed frequency of a term in a class. Because SAX words extracted from the time series of one class are often not found in others, this matrix is usually sparse.</p>
+
+<p>Next, SAX-VSM applies \( \mbox{tf} \ast \mbox{idf} \) weighting scheme for each element of this matrix to transform a frequency value into a weight coefficient. The \( \mbox{tf} \ast \mbox{idf} \) weight for a term \( t \) is defined as a product of two factors: term frequency (\(\mbox{tf}\)) and inverse document frequency (\( \mbox{idf} \)). For the first factor, we use logarithmically scaled term frequency:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\mbox{tf}_{t, d} =  \begin{cases} \log(1 + \mbox{f}_{t,d}), &\mbox{if f}_{t,d}>0  \\ 0, & \mbox{otherwise} \end{cases} %]]></script>
+
+<p>where \(t\) is the term, \(d\) is a bag of words (a document in IR terms), and \(\mbox{f}_{t,d}\) is a frequency of the term in a bag.</p>
+
+<p>The inverse document frequency we compute as usual:</p>
+
+<script type="math/tex; mode=display">\mbox{idf}_{t, D} =  \log\frac{|D|}{|d \in D : t \in d|} = \log\frac{N}{\mbox{df}_{t}}</script>
+
+<p>where \(N\) is the cardinality of a corpus \(D\) (the total number of classes) and the 
+denominator \(\mbox{df}_{t}\) is a number of bags where the term \(t\) appears.</p>
+
+<p>Then, \( \mbox{tf} \ast \mbox{idf} \) weight value for a term \( t \) in the bag \( d \) of a corpus \( D \) 
+is defined as</p>
+
+<script type="math/tex; mode=display">\mbox{tf * idf}(t, d, D) =  \mbox{tf}_{t, d} \times \mbox{idf}_{t, D} = \log(1 + \mbox{f}_{t,d}) \times \log\frac{N}{\mbox{df}_{t}}</script>
+
+<p>for all cases where \( \mbox{f}_{t,d} &gt; 0\) and \( \mbox{df}_{t} &gt; 0 \) , or zero otherwise.</p>
+
+<p>Once all frequency values are computed, term frequency matrix becomes the term weight matrix, whose columns used as <em>class’ term weight vectors</em> that facilitate the classification using Cosine similarity.</p>
 
 </div>
 
@@ -123,7 +151,7 @@ statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="s
 
       
       <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
-        Last update on: <span>2016-10-19 12:57:03 -0600</span></p>
+        Last update on: <span>2016-10-26 10:11:49 -0600</span></p>
 
       <p style="margin: 0">
         
