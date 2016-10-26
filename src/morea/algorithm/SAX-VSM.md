@@ -12,6 +12,7 @@ morea_labels:
 
 # SAX-VSM Algorithm
 
-SAX-VSM is based on two well-known techniques. The first technique is Symbolic Aggregate approXimation, which is a high-level symbolic representation of time series. The second technique is the classic Vector Space Model based on tf∗idf weighting scheme.
+SAX-VSM is based on two well-known techniques. The first technique is Symbolic Aggregate approXimation, which is a high-level symbolic representation of time series. The second technique is the classic Vector Space Model based on \\( \mbox{tf} \ast \mbox{idf} \\) weighting scheme.
 
-By using SAX, the algorithm transforms real-valued time series of a single input class into a combined collection of SAX words, which we call the "bag of words". Next, by using \\( tf∗idf \\) weighting, the algorithm transforms these collections (one collection for each of the input classes) into class-characteristic weight vectors, which, in turn, are used in classification built upon Cosine similarity.
+By using SAX, the algorithm transforms real-valued time series of a single input class into a combined collection of SAX words, which we call the "bag of words". Next, by using \\( \mbox{tf} \ast \mbox{idf} \\) weighting, the algorithm transforms these collections (one collection for each of the input classes) into class-characteristic weight vectors, which, in turn, are used in classification built upon Cosine similarity.
+
