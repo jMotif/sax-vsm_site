@@ -86,6 +86,13 @@
 
 <p>By using SAX, the algorithm transforms real-valued time series of a single input class into a combined collection of SAX words, which we call the “bag of words”. Next, by using \( \mbox{tf} \ast \mbox{idf} \) weighting, the algorithm transforms these collections (one collection for each of the input classes) into class-characteristic weight vectors, which, in turn, are used in classification built upon Cosine similarity.</p>
 
+<p>The algorithm in a nutshell is illustrated below:</p>
+
+<p><img src="https://raw.githubusercontent.com/jMotif/sax-vsm_classic/master/src/resources/assets/inanutshell.png" alt="SAX-VSM in a nutshell" /></p>
+
+<p>Classifier training is shown schematically at the left: all time series of the Class #1 are converted into a single bag of words, as well as the time series representing the Class #2 – a process which yields two bag of words, one bag per class. Next, \( \mbox{tf} \ast \mbox{idf} \) weighting is applied resulting in the two \( \mbox{tf} \ast \mbox{idf} \) weight vectors chracterizing each of the two classes.</p>
+
+<p>Classification of an unlabeled time series uses the weight vectors obtained at the training step to compute the similarity score using the Cosine similarity between these vectors and the vector of SAX words frequency obtained by processing the unlabeled input time series with exactly the same SAX discretization parameters used in training. The classification label is assigned by the label of the weight vector which yields the maximal Cosine value.</p>
 
 </div>
 
@@ -127,7 +134,7 @@ statistics" href="http://statcounter.com/shopify/" target="_blank"><img class="s
 
       
       <p style="margin: 0">Powered by the <a href="http://morea-framework.github.io/">Morea Framework</a> (Theme: spacelab)<br>
-        Last update on: <span>2016-10-26 10:11:49 -0600</span></p>
+        Last update on: <span>2016-10-26 15:30:14 -0600</span></p>
 
       <p style="margin: 0">
         
