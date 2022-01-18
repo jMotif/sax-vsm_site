@@ -14,7 +14,7 @@ morea_labels:
 ### Introduction
 In short, Symbolic Aggregate approXimation (SAX) algorithm application to the input time series transforms its into a strings.
 
-The algoithm was proposed by [Lin et al.](http://www.cs.ucr.edu/~eamonn/SAX.htm)) and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and [grammatical inference](http://grammarviz2.github.io/grammarviz2_site/).
+The algorithm was proposed by [Lin et al.](http://www.cs.ucr.edu/~eamonn/SAX.htm)) and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and [grammatical inference](http://grammarviz2.github.io/grammarviz2_site/).
 
 ### The algorithm
 SAX transforms a time-series *X* of length *n* into the string of arbitrary length \\(\omega\\), where \\(\omega << n\\) typically, using an alphabet *A* of size *a > 2*. The algorithm consist of two steps: (i) it transforms the original time-series into the [PAA representation](PAA.html) and (ii) it converts the PAA data into a string.
