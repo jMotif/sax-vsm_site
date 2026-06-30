@@ -1,0 +1,56 @@
+<!doctype html><html lang=en data-accent=saxvsm><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Symbolic Aggregate Approximation (SAX) · SAX-VSM</title><meta name=description content="An overview of SAX discretization algorithm."><link rel=icon href=/sax-vsm_site/favicon.ico><link rel=stylesheet href=/sax-vsm_site/css/main.min.d6a5a25a240dcd5a512cbd567836ea8c6cc632f2210c99ef91af791037011110.css integrity="sha256-1qWiWiQNzVpRLL1WeDbqjGzGMvIhDJnvka95EDcBERA="><script>MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}}</script><script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js async></script><meta property="og:title" content="Symbolic Aggregate Approximation (SAX) · SAX-VSM"><meta property="og:type" content="website"><meta property="og:description" content="SAX-VSM: interpretable time series classification with Symbolic Aggregate approXimation and a tf·idf vector space model. A Java library."></head><body><header class=site-header><div class=wrap><a class=brand href=/sax-vsm_site/><span class=glyph>∑</span> SAX&#8209;VSM
+</a><button class=nav-toggle aria-label="Toggle navigation" aria-controls=nav>menu</button><nav class=nav id=nav><a href=/sax-vsm_site/>Overview</a>
+<a href=/sax-vsm_site/algorithm/ class=active>Algorithms</a>
+<a href=/sax-vsm_site/patterns/>Pattern discovery</a>
+<a class=gh href=https://github.com/jMotif/sax-vsm_classic target=_blank rel=noopener aria-label="Source on GitHub">GitHub ↗</a></nav></div></header><main id=main><div class=doc><div class=wrap><div class=crumb><a href=/sax-vsm_site/>Overview</a>
+/ <a href=/sax-vsm_site/algorithm/>Algorithms</a>
+/ Symbolic Aggregate Approximation (SAX)</div><div class=page-title><h1>Symbolic Aggregate Approximation (SAX)</h1><p class=summary>An overview of SAX discretization algorithm.</p></div><div class=doc-grid><article class=doc-body><h3 id=introduction>Introduction</h3><p>In short, the Symbolic Aggregate approXimation (SAX) algorithm transforms an input time series into a string.</p><p>The algorithm was proposed by <a href=https://www.cs.ucr.edu/~eamonn/SAX.htm>Lin et al.</a> and extends the PAA-based approach inheriting the original algorithm simplicity and low computational complexity while providing satisfactory sensitivity and selectivity in range query processing. Moreover, the use of a symbolic representation opened a door to the existing wealth of data-structures and string-manipulation algorithms in computer science such as hashing, regular expression, pattern matching, suffix trees, and <a href=http://grammarviz2.github.io/grammarviz2_site/>grammatical inference</a>.</p><h3 id=the-algorithm>The algorithm</h3><p>SAX transforms a time-series <em>X</em> of length <em>n</em> into the string of arbitrary length \(\omega\), where \(\omega \ll n\) typically, using an alphabet <em>A</em> of size <em>a > 2</em>. The algorithm consist of two steps: (i) it transforms the original time-series into the <a href=https://jmotif.github.io/sax-vsm_site/algorithm/paa/>PAA representation</a> and (ii) it converts the PAA data into a string.</p><p>The use of PAA brings advantages of a simple and efficient dimensionality reduction while providing the important lower bounding property. The actual conversion of PAA coefficients into letters by using a lookup table is also computationally efficient and the contractive property of symbolic distance was proven by Lin et al.</p><p>Discretization of the PAA representation of a time-series into SAX is implemented in a way which produces symbols corresponding to the time-series features with equal probability. The extensive and rigorous analysis of various time-series datasets available to the original algorithm&rsquo;s authors has shown that the values of <a href=https://jmotif.github.io/sax-vsm_site/algorithm/znorm/><em>z</em>-normalized</a> time-series follow the Normal distribution. By using its properties it&rsquo;s easy to pick <em>a</em> equal-sized areas under the Normal curve using lookup tables for the cut lines coordinates, slicing the under-the-Gaussian-curve area.</p><p>The <em>x</em> coordinates of these lines called <em>breakpoints</em> or <em>cuts</em> in the SAX context. The list of breakpoints \(B = \beta_{1}, \beta_{2} ,..., \beta_{a-1} \) such that \(\beta_{i-1} \lt \beta_{i}\) and \(\beta_{0}=-\infty\), \(\beta_{a}=\infty\) divides the area under <em>N(0,1)</em> into <em>a</em> equal areas. By assigning a corresponding alphabet symbol \(\alpha_{j}\) to each interval \([\beta_{j-1},\beta_{j})\), the conversion of the vector of PAA coefficients \(\bar{C}\) into the string \(\hat{C}\) implemented as follows:</p>$$ \hat{c}_{i} = \alpha_{j}, \; \text{iff} \; \bar{c}_{i} \in [ \beta_{j-1}, \beta_{j} ) $$<p>SAX introduces new metrics for measuring distance between strings by extending Euclidean and PAA distances.
+The function returning the minimal distance between two string representations of original time series \(\hat{Q}\) and \(\hat{C}\) is defined as</p>$$MINDIST(\hat{Q},\hat{C})\equiv\sqrt{\frac{n}{w}}\sqrt{\sum_{i=1}^{w}(dist(\hat{q}_{i},\hat{c}_{i}))^{2}}$$<p>where the <em>dist</em> function is implemented by using the lookup table for the particular set of the breakpoints (alphabet size) as shown
+in the Table below, and where the singular value for each cell <em>(r,c)</em> is computed as</p>$$ cell_{(r,c)} = \begin{cases} 0, \text{if} \left|r-c \right| \leq 1 \\ \beta_{\max(r,c)-1} - \beta_{\min(r,c)-1}, \text{otherwise}\end{cases}$$<p><strong>The lookup table for 4-letters alphabet</strong></p><table><thead><tr><th style=text-align:left>     </th><th style=text-align:center>     a     </th><th style=text-align:center>     b     </th><th style=text-align:center>     c     </th><th style=text-align:center>     d     </th></tr></thead><tbody><tr><td style=text-align:left>a</td><td style=text-align:center>0</td><td style=text-align:center>0</td><td style=text-align:center>0.67</td><td style=text-align:center>1.34</td></tr><tr><td style=text-align:left>b</td><td style=text-align:center>0</td><td style=text-align:center>0</td><td style=text-align:center>0</td><td style=text-align:center>0.67</td></tr><tr><td style=text-align:left>c</td><td style=text-align:center>0.67</td><td style=text-align:center>0</td><td style=text-align:center>0</td><td style=text-align:center>0</td></tr><tr><td style=text-align:left>d</td><td style=text-align:center>1.34</td><td style=text-align:center>0.67</td><td style=text-align:center>0</td><td style=text-align:center>0</td></tr></tbody></table><p>As shown by Lin et al, this SAX distance metric lower-bounds the PAA distance, i.e.</p>$$ \sum_{i=1}^{n}(q_{i}-c_{i})^{2} \geq n(\bar{Q}-\bar{C})^{2} \geq n(dist(\hat{Q},\hat{C}))^2 $$<p>The SAX lower bound was examined by Ding et al in great detail and found to be superior in precision to the spectral decomposition methods on bursty (non-periodic) data sets.</p><h2 id=sax-primer>SAX primer</h2><p>A worked example of the full transform.</p><h3 id=10-time-series-data>1.0 Time series data</h3><p>I will use the following time series for this example (the Euclidean distance between ts1 and ts2 is 11.4):</p><pre>
+> ts1=c(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34)
+> ts2=c(0.50, 1.29, 2.58, 3.83, 3.25, 4.25, 3.83, 5.63, 6.44, 6.25, 8.75, 8.83, 3.25, 0.75, 0.72)
+> dist(rbind(ts1,ts2), method = "euclidean")
+         ts1
+ts2 11.42126
+</pre><p><img src=/sax-vsm_site/images/sax_data.png alt loading=lazy></p><p><strong>which I&rsquo;ll transform into strings of length 9 whose letters come from an alphabet of size 4</strong></p><h3 id=20-z-normalization>2.0 Z-normalization</h3><p>Before transforming timeseries with SAX we <em>Z</em>-normalize data first:</p><pre>
+znorm <- function(ts){
+  ts.mean <- mean(ts)
+  ts.dev <- sd(ts)
+  (ts - ts.mean)/ts.dev
+}
+
+ts1_znorm=znorm(ts1)
+ts2_znorm=znorm(ts2)
+</pre><p><img src=/sax-vsm_site/images/sax_znorm.png alt loading=lazy></p><p><a href=https://jmotif.github.io/sax-vsm_site/algorithm/paa/>PAA</a> follows the standard procedure:</p><h3 id=30-paa-transform>3.0 PAA transform</h3><p>PAA</p><pre>
+paa <- function(ts, paa_size){
+  len = length(ts)
+  if (len == paa_size) {
+    ts
+  }
+  else {
+    if (len %% paa_size == 0) {
+      colMeans(matrix(ts, nrow=len %/% paa_size, byrow=F))
+    }
+    else {
+      res = rep.int(0, paa_size)
+      for (i in c(0:(len * paa_size - 1))) {
+        idx = i %/% len + 1# the spot
+        pos = i %/% paa_size + 1 # the col spot
+        res[idx] = res[idx] + ts[pos]
+      }
+      for (i in c(1:paa_size)) {
+        res[i] = res[i] / len
+      }
+      res
+    }
+  }
+}
+paa_size=9
+s1_paa = paa(ts1_znorm,paa_size)
+s2_paa = paa(ts2_znorm,paa_size)
+</pre><p><img src=/sax-vsm_site/images/sax_paa1.png alt loading=lazy></p><h3 id=40-paa-values-to-letters>4.0 PAA values to letters</h3><p>I use the 4 symbols alphabet {a,b,c,d} as in the table above. The cut lines for this alphabet shown as the thin blue lines on the plot below.</p><p><img src=/sax-vsm_site/images/sax_distances.png alt loading=lazy></p><p>SAX transform of ts1 into string through 9-points PAA: &ldquo;abddccbaa&rdquo;</p><p>SAX transform of ts2 into string through 9-points PAA: &ldquo;abbccddba&rdquo;</p><p>SAX distance: 0 + 0 + 0.67 + 0 + 0 + 0 + 0.67 + 0 + 0 = 1.34</p><p><em>At the plot, orange color depicts symbols distance between which is counted - they are not &ldquo;adjacent&rdquo; to each other in the table.</em></p><div class=pager><a href=/sax-vsm_site/algorithm/slidingwindowsax/>← Time series discretization via sliding window</a>
+<a href=/sax-vsm_site/algorithm/paa/>Piecewise Aggregate Approximation (PAA) →</a></div></article><aside class=toc><strong>On this page</strong><nav id=TableOfContents><ul><li><ul><li><a href=#introduction>Introduction</a></li><li><a href=#the-algorithm>The algorithm</a></li></ul></li><li><a href=#sax-primer>SAX primer</a><ul><li><a href=#10-time-series-data>1.0 Time series data</a></li><li><a href=#20-z-normalization>2.0 Z-normalization</a></li><li><a href=#30-paa-transform>3.0 PAA transform</a></li><li><a href=#40-paa-values-to-letters>4.0 PAA values to letters</a></li></ul></li></ul></nav></aside></div></div></div></main><footer class=site-footer><div class=wrap><div><strong style=font-family:var(--display);color:var(--ink)>SAX-VSM</strong> ·
+interpretable time series classification<br>Contact: <a href=mailto:seninp@gmail.com>Pavel Senin</a> ·
+<a href=https://github.com/jMotif/sax-vsm_classic target=_blank rel=noopener>source on GitHub</a> ·
+<a href=http://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf target=_blank rel=noopener>the paper</a></div><div class=sib>part of the jMotif stack ·
+<a href=https://grammarviz2.github.io/grammarviz2_site/ target=_blank rel=noopener>GrammarViz ↗</a></div></div></footer><script>document.querySelector(".nav-toggle")?.addEventListener("click",function(){document.querySelector(".nav")?.classList.toggle("open")})</script></body></html>

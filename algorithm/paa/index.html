@@ -1,0 +1,44 @@
+<!doctype html><html lang=en data-accent=saxvsm><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Piecewise Aggregate Approximation (PAA) · SAX-VSM</title><meta name=description content="An overview of PAA algorithm."><link rel=icon href=/sax-vsm_site/favicon.ico><link rel=stylesheet href=/sax-vsm_site/css/main.min.d6a5a25a240dcd5a512cbd567836ea8c6cc632f2210c99ef91af791037011110.css integrity="sha256-1qWiWiQNzVpRLL1WeDbqjGzGMvIhDJnvka95EDcBERA="><script>MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre","code"]}}</script><script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js async></script><meta property="og:title" content="Piecewise Aggregate Approximation (PAA) · SAX-VSM"><meta property="og:type" content="website"><meta property="og:description" content="SAX-VSM: interpretable time series classification with Symbolic Aggregate approXimation and a tf·idf vector space model. A Java library."></head><body><header class=site-header><div class=wrap><a class=brand href=/sax-vsm_site/><span class=glyph>∑</span> SAX&#8209;VSM
+</a><button class=nav-toggle aria-label="Toggle navigation" aria-controls=nav>menu</button><nav class=nav id=nav><a href=/sax-vsm_site/>Overview</a>
+<a href=/sax-vsm_site/algorithm/ class=active>Algorithms</a>
+<a href=/sax-vsm_site/patterns/>Pattern discovery</a>
+<a class=gh href=https://github.com/jMotif/sax-vsm_classic target=_blank rel=noopener aria-label="Source on GitHub">GitHub ↗</a></nav></div></header><main id=main><div class=doc><div class=wrap><div class=crumb><a href=/sax-vsm_site/>Overview</a>
+/ <a href=/sax-vsm_site/algorithm/>Algorithms</a>
+/ Piecewise Aggregate Approximation (PAA)</div><div class=page-title><h1>Piecewise Aggregate Approximation (PAA)</h1><p class=summary>An overview of PAA algorithm.</p></div><div class=doc-grid><article class=doc-body><p>PAA approximates a time-series <em>X</em> of length <em>n</em> into vector \( \bar{X}=(\bar{x}_{1},...,\bar{x}_{M}) \) of any arbitrary length \( M \leq n \) where each of \( \bar{x_{i}} \) is calculated as follows:</p>$$ \bar{x}_{i} = \frac{M}{n} \sum_{j=n/M(i-1)+1}^{(n/M)i} x_{j} $$<p>Which simply means that in order to reduce the dimensionality from <em>n</em> to <em>M</em>, we first divide the original time-series into <em>M</em> equally sized frames and secondly compute the mean values for each frame. The sequence assembled from the mean values is the PAA approximation (i.e., transform) of the original time-series. As it was shown by Keogh et al, the complexity of the PAA transform can be reduced from <em>O(NM)</em> to <em>O(Mm)</em> where <em>m</em> is the number of frames. By using the following distance measure</p>$$ D_{PAA}(\bar{X},\bar{Y}) \equiv \sqrt{\frac{n}{M}} \sqrt{ \sum_{i=1}^{M} \left( \bar{x}_{i}-\bar{y}_{i} \right) } $$<p>Yi & Faloutsos, and Keogh et al, have shown that PAA satisfies to the lower bounding condition and guarantees no false dismissals, i.e.:</p>$$ D_{PAA}(\bar{X},\bar{Y}) \leq D(X,Y) $$<h2 id=example>Example</h2><p>In this primer I use the next time series:</p><pre>
+series1 <- c(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34)
+</pre><p><img src=/sax-vsm_site/images/paa_raw.png alt loading=lazy></p><p>and the following R code:</p><pre>
+paa <- function(ts, paa_size){
+  len = length(ts)
+  if (len == paa_size) {
+    ts
+  }
+  else {
+    if (len %% paa_size == 0) {
+      colMeans(matrix(ts, nrow=len %/% paa_size, byrow=F))
+    }
+    else {
+      res = rep.int(0, paa_size)
+      for (i in c(0:(len * paa_size - 1))) {
+        idx = i %/% len + 1# the spot
+        pos = i %/% paa_size + 1 # the col spot
+        res[idx] = res[idx] + ts[pos]
+      }
+      for (i in c(1:paa_size)) {
+        res[i] = res[i] / len
+      }
+      res
+    }
+  }
+}
+</pre><p>whose application produces a seven-point piecewise aggregate approximation:</p><pre>
+s1_paa = paa(series1,7)
+(2.23, 5.62, 8.67, 6.36, 4.58, 3.33, 1.45)
+</pre><p><img src=/sax-vsm_site/images/paa7.png alt loading=lazy></p><p>or a 9-point approximation which is a bit trickier:</p><pre>
+s1_paa = paa(series1,9)
+(2.14, 3.63, 8.26, 8.28, 6.27, 4.65, 4.45, 2.39, 1.38)
+</pre><p><img src=/sax-vsm_site/images/paa9.png alt loading=lazy></p><div class=pager><a href=/sax-vsm_site/algorithm/sax/>← Symbolic Aggregate Approximation (SAX)</a>
+<a href=/sax-vsm_site/algorithm/znorm/>Z-normalization →</a></div></article><aside class=toc><strong>On this page</strong><nav id=TableOfContents><ul><li><a href=#example>Example</a></li></ul></nav></aside></div></div></div></main><footer class=site-footer><div class=wrap><div><strong style=font-family:var(--display);color:var(--ink)>SAX-VSM</strong> ·
+interpretable time series classification<br>Contact: <a href=mailto:seninp@gmail.com>Pavel Senin</a> ·
+<a href=https://github.com/jMotif/sax-vsm_classic target=_blank rel=noopener>source on GitHub</a> ·
+<a href=http://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf target=_blank rel=noopener>the paper</a></div><div class=sib>part of the jMotif stack ·
+<a href=https://grammarviz2.github.io/grammarviz2_site/ target=_blank rel=noopener>GrammarViz ↗</a></div></div></footer><script>document.querySelector(".nav-toggle")?.addEventListener("click",function(){document.querySelector(".nav")?.classList.toggle("open")})</script></body></html>
