@@ -1,0 +1,45 @@
+{{/* SAX-VSM signature: signal -> bag of SAX words -> tf*idf weighted terms.
+     The weighting (different type sizes) is the idea unique to SAX-VSM. */}}
+<svg class="sax-figure vsm" viewBox="0 0 520 360" role="img" aria-labelledby="vsmt vsmd" preserveAspectRatio="xMidYMid meet">
+  <title id="vsmt">From a signal to a weighted bag of SAX words</title>
+  <desc id="vsmd">A time series is discretized into SAX words; tf·idf weighting scales each word by how characteristic it is of its class.</desc>
+
+  {{/* stage 1: the signal */}}
+  <text class="stage-label" x="8" y="22">signal</text>
+  <path class="trace" d="M10,70 C40,40 60,30 90,52 S140,100 175,78 S205,40 235,58"/>
+
+  {{/* arrow */}}
+  <path class="flow" d="M250,58 h22" marker-end="url(#ah)"/>
+
+  {{/* stage 2: SAX words (the bag) */}}
+  <text class="stage-label" x="300" y="22">SAX words</text>
+  <g class="words-mono">
+    <text x="300" y="50">abc</text><text x="350" y="50">bca</text><text x="410" y="50">cab</text>
+    <text x="300" y="72">abb</text><text x="350" y="72">bcb</text><text x="410" y="72">caa</text>
+    <text x="300" y="94">acb</text><text x="350" y="94">bbc</text><text x="410" y="94">cba</text>
+  </g>
+
+  {{/* arrow down */}}
+  <path class="flow" d="M260,118 v18" marker-end="url(#ah)"/>
+  <text class="stage-label" x="8" y="170">tf·idf weighted terms</text>
+
+  {{/* stage 3: weighted word cloud — size encodes weight, this is the SAX-VSM signature */}}
+  <g class="cloud">
+    <text class="w hl" x="40"  y="240" style="font-size:42px">cba</text>
+    <text class="w"    x="155" y="220" style="font-size:24px">abc</text>
+    <text class="w hl" x="245" y="250" style="font-size:34px">bcb</text>
+    <text class="w"    x="350" y="225" style="font-size:18px">caa</text>
+    <text class="w"    x="60"  y="290" style="font-size:20px">bca</text>
+    <text class="w hl" x="150" y="300" style="font-size:30px">abb</text>
+    <text class="w"    x="285" y="300" style="font-size:16px">cab</text>
+    <text class="w"    x="360" y="285" style="font-size:26px">acb</text>
+    <text class="w"    x="430" y="255" style="font-size:14px">bbc</text>
+  </g>
+  <text class="stage-label" x="40" y="330" style="letter-spacing:0">larger = more characteristic of the class</text>
+
+  <defs>
+    <marker id="ah" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>

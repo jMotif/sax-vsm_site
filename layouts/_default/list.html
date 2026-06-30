@@ -1,0 +1,42 @@
+{{ define "main" }}
+<div class="doc">
+  <div class="wrap">
+    <div class="crumb"><a href="{{ site.Home.RelPermalink }}">Overview</a> / {{ .Title }}</div>
+    <div class="page-title">
+      <h1>{{ .Title }}{{ if .Params.coming_soon }} <span class="badge">Planned</span>{{ end }}</h1>
+      {{ with .Params.summary }}<p class="summary">{{ . }}</p>{{ end }}
+    </div>
+
+    {{ if .Params.coming_soon }}
+    <div class="notice">
+      <p>This module is planned but not yet written. In the meantime, the method is described in <a href="{{ site.Params.paper }}" target="_blank" rel="noopener">the SAX-VSM paper</a>, and the algorithm primer covers the building blocks under <a href="{{ (site.GetPage "/algorithm").RelPermalink }}">Algorithms</a>.</p>
+    </div>
+    {{ else }}
+      {{ with .Content }}<div class="doc-body">{{ . }}</div>{{ end }}
+    {{ end }}
+
+    {{ $pages := .Pages.ByParam "weight" }}
+    {{ with $pages }}
+    <div class="cards">
+      {{ range . }}
+      <a class="card" href="{{ .RelPermalink }}">
+        <span class="num">{{ with .Params.pagekind }}{{ . }}{{ else }}page{{ end }}</span>
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
+        {{ with .Params.labels }}<div class="tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</div>{{ end }}
+      </a>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    {{ with .Params.external }}
+    <h2>Further reading</h2>
+    <div class="pubs">
+      {{ range . }}
+      <div class="pub"><span class="yr">link</span><div><div class="t"><a href="{{ .url }}" target="_blank" rel="noopener">{{ .title }} ↗</a></div>{{ with .note }}<div class="a">{{ . }}</div>{{ end }}</div></div>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,85 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">SAX · tf·idf · cosine similarity · Java</div>
+      <h1>Classify time series — and see why.</h1>
+      <p class="lede">SAX-VSM turns each class of time series into a <em>weighted bag of SAX words</em>. Classification is a cosine-similarity lookup, and because every word maps back to a subsequence, the model tells you which shapes drove its decision.</p>
+      <div class="btnrow">
+        <a class="btn accent" href="{{ (site.GetPage "/algorithm").RelPermalink }}">Read the algorithm →</a>
+        <a class="btn ghost" href="{{ site.Params.paper }}" target="_blank" rel="noopener">The paper ↗</a>
+        <a class="btn ghost" href="{{ site.Params.github }}" target="_blank" rel="noopener">Source ↗</a>
+      </div>
+    </div>
+    <div>{{ partial "sax-figure.html" . }}</div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Two classic ideas, composed</h2>
+      <p>SAX-VSM joins <a href="{{ (site.GetPage "/algorithm/sax").RelPermalink }}">Symbolic Aggregate approXimation</a> — a symbolic representation of time series — with the <a href="{{ (site.GetPage "/algorithm/tfidf").RelPermalink }}">vector space model</a> from information retrieval. Each class collapses into one tf·idf-weighted term vector; an unlabeled series is scored against each by cosine similarity and labeled by the closest.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <span class="num">step 01</span>
+        <h3>Discretize</h3>
+        <p>A sliding window + SAX converts every class's training series into one combined bag of SAX words.</p>
+      </div>
+      <div class="card">
+        <span class="num">step 02</span>
+        <h3>Weight</h3>
+        <p>tf·idf scales each word by how characteristic it is of its class, yielding one weight vector per class.</p>
+      </div>
+      <div class="card">
+        <span class="num">step 03</span>
+        <h3>Classify</h3>
+        <p>An unlabeled series is discretized the same way and assigned the label of the most cosine-similar class vector.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow eyebrow-mono">The primer</span>
+      <h2 class="tight">A step-by-step walk through the math</h2>
+      <p>The algorithm pages build SAX-VSM from the ground up — z-normalization, PAA, the SAX symbol table, sliding-window discretization and numerosity reduction, then tf·idf and cosine similarity — each with worked R examples and figures.</p>
+      <div class="btnrow">
+        <a class="btn" href="{{ (site.GetPage "/algorithm").RelPermalink }}">Start the primer →</a>
+        <a class="btn ghost" href="{{ (site.GetPage "/patterns").RelPermalink }}">Pattern discovery</a>
+      </div>
+    </div>
+    <div class="split-media">
+      <img src="{{ "images/inanutshell.png" | relURL }}" alt="SAX-VSM in a nutshell: training time series become tf·idf weight vectors used for cosine-similarity classification">
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head"><span class="eyebrow">Use it</span><h2>Get the library</h2></div>
+    <div class="cards">
+      <div class="card">
+        <span class="num">maven central</span>
+        <h3>Add the dependency</h3>
+        <p>SAX-VSM ships as <code>{{ site.Params.maven }}</code> on Maven Central.</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;net.seninp&lt;/groupId&gt;
+  &lt;artifactId&gt;sax-vsm&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+      </div>
+      <div class="card">
+        <span class="num">reference</span>
+        <h3>Cite the work</h3>
+        <p>Senin, P., Malinchik, S. <em>SAX-VSM: Interpretable Time Series Classification Using SAX and Vector Space Model.</em> ICDM 2013.</p>
+        <div class="tags"><a class="tag" href="{{ site.Params.paper }}" target="_blank" rel="noopener">PDF ↗</a><a class="tag" href="{{ site.Params.github }}" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,44 @@
+baseURL = "https://jmotif.github.io/sax-vsm_site/"
+defaultContentLanguage = "en"
+title = "SAX-VSM"
+enableGitInfo = false
+
+# documentation microsite — no taxonomies (suppresses default /categories/ & /tags/)
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "SAX-VSM: interpretable time series classification with Symbolic Aggregate approXimation and a tf·idf vector space model. A Java library."
+  accent = "saxvsm"
+  github = "https://github.com/jMotif/sax-vsm_classic"
+  paper = "http://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf"
+  tagline = "Interpretable time series classification"
+  maven = "net.seninp:sax-vsm:2.0.0"
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.goldmark.extensions.passthrough]
+    enable = true
+    [markup.goldmark.extensions.passthrough.delimiters]
+      block  = [['$$', '$$'], ['\[', '\]']]
+      inline = [['\(', '\)']]
+  [markup.highlight]
+    noClasses = false
+    style = "github"
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[menu]
+  [[menu.main]]
+    name = "Overview"
+    pageRef = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Algorithms"
+    pageRef = "/algorithm/"
+    weight = 2
+  [[menu.main]]
+    name = "Pattern discovery"
+    pageRef = "/patterns/"
+    weight = 3
