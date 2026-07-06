@@ -2,6 +2,7 @@ baseURL = "https://jmotif.github.io/sax-vsm_site/"
 defaultContentLanguage = "en"
 title = "SAX-VSM"
 enableGitInfo = false
+enableRobotsTXT = true
 
 # documentation microsite — no taxonomies (suppresses default /categories/ & /tags/)
 disableKinds = ["taxonomy", "term"]
@@ -13,6 +14,7 @@ disableKinds = ["taxonomy", "term"]
   paper = "https://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf"
   tagline = "Interpretable time series classification"
   maven = "net.seninp:sax-vsm:2.0.0"
+  ogimage = "inanutshell.png"           # social-preview card image (static/images/)
 
 [markup]
   [markup.goldmark.renderer]
