@@ -2,18 +2,20 @@
 title: "Interpretable time series classification with SAX-VSM"
 weight: 8
 pagekind: "reading"
-summary: "SAX-VSM algorithm description."
+summary: "The full SAX-VSM algorithm: per-class bags of SAX words, tf·idf weighting, and cosine-similarity classification."
 labels:
   - algorithm
 ---
-SAX-VSM is based on two well-known techniques. The first technique is Symbolic Aggregate approXimation, which is a high-level symbolic representation of time series. The second technique is the classic Vector Space Model based on \( \mbox{tf} \ast \mbox{idf} \) weighting scheme.
+SAX-VSM combines two well-known techniques: Symbolic Aggregate approXimation — a symbolic representation of time series — and the classic Vector Space Model with its \( \mbox{tf} \ast \mbox{idf} \) weighting scheme from Information Retrieval.
 
-By using SAX, the algorithm transforms real-valued time series of a single input class into a combined collection of SAX words, which we call the "bag of words". Next, by using \( \mbox{tf} \ast \mbox{idf} \) weighting, the algorithm transforms these collections (one collection for each of the input classes) into class-characteristic weight vectors, which, in turn, are used in classification built upon Cosine similarity. 
+Using SAX, the algorithm transforms all real-valued time series of one training class into a single collection of SAX words, which we call the class's "bag of words". Then, using \( \mbox{tf} \ast \mbox{idf} \) weighting, the algorithm transforms these collections (one per class) into class-characteristic weight vectors, which drive the classification via cosine similarity.
 
-The algorithm in a nutshell is illustrated below:
+The algorithm in a nutshell:
 
-{{< fig src="inanutshell.png" w="800" >}}
+{{< fig src="inanutshell.png" w="800" alt="SAX-VSM overview: training series become per-class bags of SAX words, tf·idf turns the bags into class weight vectors, and an unlabeled series is assigned the label of the most cosine-similar vector" >}}
 
-Classifier training is shown schematically at the left: all time series of the Class #1 are converted into a single bag of words, as well as the time series representing the Class #2 -- a process which yields two bag of words, one bag per class. Next, \( \mbox{tf} \ast \mbox{idf} \) weighting is applied resulting in the two \( \mbox{tf} \ast \mbox{idf} \) weight vectors chracterizing each of the two classes. 
+Classifier **training** is shown on the left: all time series of Class #1 are converted into a single bag of words, and likewise for Class #2 — a process that yields two bags, one per class. Then \( \mbox{tf} \ast \mbox{idf} \) weighting is applied, producing two weight vectors, one characterizing each class.
 
-Classification of an unlabeled time series uses the weight vectors obtained at the training step to compute the similarity score using the Cosine similarity between these vectors and the vector of SAX words frequency obtained by processing the unlabeled input time series with exactly the same SAX discretization parameters used in training. The classification label is assigned by the label of the weight vector which yields the maximal Cosine value.
+**Classification** of an unlabeled time series uses the weight vectors obtained in training. The unlabeled series is discretized with exactly the same SAX parameters used in training, yielding a vector of SAX word frequencies. The cosine similarity between this frequency vector and each class weight vector is computed, and the label of the class with the maximal cosine value is assigned.
+
+The individual steps are covered in the preceding modules: [z-normalization]({{< ref "/algorithm/znorm" >}}), [PAA]({{< ref "/algorithm/paa" >}}), [SAX]({{< ref "/algorithm/sax" >}}), [sliding-window discretization]({{< ref "/algorithm/slidingwindowsax" >}}), [numerosity reduction]({{< ref "/algorithm/numerosityreduction" >}}), [tf·idf]({{< ref "/algorithm/tfidf" >}}), and [cosine similarity]({{< ref "/algorithm/cosine" >}}). A hands-on walkthrough with the Java implementation lives in the [classification module]({{< ref "/classification" >}}).
