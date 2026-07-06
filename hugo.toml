@@ -15,6 +15,7 @@ disableKinds = ["taxonomy", "term"]
   tagline = "Interpretable time series classification"
   maven = "net.seninp:sax-vsm:2.0.0"
   ogimage = "inanutshell.png"           # social-preview card image (static/images/)
+  google_site_verification = "goOEDf6QeLUKZ8PbeAvNx1qvdzHrJfrnznozqJvqEOQ"
 
 [markup]
   [markup.goldmark.renderer]
