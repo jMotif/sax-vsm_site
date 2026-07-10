@@ -10,7 +10,7 @@ PAA approximates a time series *X* of length *n* with a vector \( \bar{X}=(\bar{
 
 $$ \bar{x}_{i} = \frac{w}{n} \sum_{j=n/w(i-1)+1}^{(n/w)i} x_{j} $$
 
-This simply means that in order to reduce the dimensionality from *n* to *w*, we first divide the original time series into *w* equal-sized frames and then compute the mean value of each frame. The sequence assembled from these mean values is the PAA approximation (i.e., transform) of the original time series. (The PAA literature often denotes the reduced dimensionality by *M*; we use *w* throughout this site because, in the SAX context, it becomes the word size.) Computing the transform takes a single pass over the series. PAA is equipped with the distance measure
+This simply means that in order to reduce the dimensionality from *n* to *w*, we divide the series into *w* frames and compute the mean value of each frame. When *n* is not evenly divisible by *w*, segment boundaries fall between samples: a point straddling an edge contributes fractionally to both neighboring frames (see the 9-frame example below). The jMotif Java/R implementations use this fractional-boundary rule; only the evenly-divisible case reduces to plain block averages. The sequence assembled from these means is the PAA approximation (i.e., transform) of the original time series. (The PAA literature often denotes the reduced dimensionality by *M*; we use *w* throughout this site because, in the SAX context, it becomes the word size.) Computing the transform takes a single pass over the series. PAA is equipped with the distance measure
 
 $$ D_{PAA}(\bar{X},\bar{Y}) \equiv \sqrt{\frac{n}{w}} \sqrt{ \sum_{i=1}^{w} \left( \bar{x}_{i}-\bar{y}_{i} \right)^{2} } $$
 

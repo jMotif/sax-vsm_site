@@ -3,18 +3,18 @@ title: "Time series classification"
 weight: 4
 summary: "Training and running the SAX-VSM classifier from the command line, and reading the patterns behind its decisions."
 ---
-This module walks through classifying time series with the SAX-VSM Java implementation — from building the jar to interpreting *why* the classifier decided the way it did. All transcripts below were captured with `sax-vsm` 2.0.0.
+This module walks through classifying time series with the SAX-VSM Java implementation — from building the jar to interpreting *why* the classifier decided the way it did. All transcripts below were captured with `sax-vsm` 2.0.1.
 
 ## 1. Get the code
 
-SAX-VSM ships on Maven Central as `net.seninp:sax-vsm:2.0.0`. For command-line use, build the self-contained jar from [the repository]({{< param github >}}):
+SAX-VSM ships on Maven Central as `net.seninp:sax-vsm:2.0.1`. For command-line use, build the self-contained jar from [the repository]({{< param github >}}):
 
 ```bash
 $ git clone https://github.com/jMotif/sax-vsm_classic.git
 $ cd sax-vsm_classic
 $ mvn -P single -DskipTests package
 ...
-[INFO] Building jar: target/sax-vsm-2.0.0-jar-with-dependencies.jar
+[INFO] Building jar: target/sax-vsm-2.0.1-jar-with-dependencies.jar
 ```
 
 ## 2. Run the classifier
@@ -24,7 +24,7 @@ The class `net.seninp.jmotif.SAXVSMClassifier` trains on one file and evaluates 
 Here is a run on the classic [Gun/Point dataset](https://www.cs.ucr.edu/~eamonn/time_series_data/) (two classes: an actor draws a gun, or just points a finger; 50 training and 150 test series of length 150):
 
 ```text
-$ java -cp "target/sax-vsm-2.0.0-jar-with-dependencies.jar" net.seninp.jmotif.SAXVSMClassifier \
+$ java -cp "target/sax-vsm-2.0.1-jar-with-dependencies.jar" net.seninp.jmotif.SAXVSMClassifier \
     -train src/resources/data/Gun_Point/Gun_Point_TRAIN \
     -test src/resources/data/Gun_Point/Gun_Point_TEST \
     -w 33 -p 17 -a 15
@@ -44,7 +44,7 @@ Two of the 150 test series are misclassified. On the three-class CBF benchmark t
 The discretization parameters matter, and guessing them is no fun. The jar's main class is a [DiRect (DIviding RECTangles)](https://link.springer.com/article/10.1007/BF00941892) sampler that searches the (window, PAA, alphabet) space against cross-validation error, so `java -jar` runs it directly:
 
 ```text
-$ java -jar target/sax-vsm-2.0.0-jar-with-dependencies.jar \
+$ java -jar target/sax-vsm-2.0.1-jar-with-dependencies.jar \
     -train src/resources/data/Gun_Point/Gun_Point_TRAIN \
     -test src/resources/data/Gun_Point/Gun_Point_TEST \
     -wmin 10 -wmax 150 -pmin 5 -pmax 75 -amin 2 -amax 18 --hold_out 1 -i 3
@@ -64,7 +64,7 @@ Each evaluated point is logged as `@<error> <window> <paa> <alphabet>`; the run 
 Interpretability is the point of SAX-VSM: every tf·idf weight belongs to a SAX word, and every SAX word maps back to a shape in the signal. The class `net.seninp.jmotif.direct.SAXVSMPatternExplorer` prints the highest-weighted words per class, the series that contain them, and their locations (its positional arguments are train file, test file, window, PAA, alphabet, strategy):
 
 ```text
-$ java -cp "target/sax-vsm-2.0.0-jar-with-dependencies.jar" net.seninp.jmotif.direct.SAXVSMPatternExplorer \
+$ java -cp "target/sax-vsm-2.0.1-jar-with-dependencies.jar" net.seninp.jmotif.direct.SAXVSMPatternExplorer \
     src/resources/data/Gun_Point/Gun_Point_TRAIN src/resources/data/Gun_Point/Gun_Point_TEST 33 17 15 EXACT
 Class key: 1
 "mmmmmmlkigedcbbbb", 0.07139

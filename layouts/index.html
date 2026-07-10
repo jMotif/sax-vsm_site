@@ -66,11 +66,12 @@
       <div class="card">
         <span class="num">maven central</span>
         <h3>Add the dependency</h3>
+        {{ $mvn := split site.Params.maven ":" }}
         <p>SAX-VSM ships as <code>{{ site.Params.maven }}</code> on Maven Central.</p>
 <pre><code>&lt;dependency&gt;
-  &lt;groupId&gt;net.seninp&lt;/groupId&gt;
-  &lt;artifactId&gt;sax-vsm&lt;/artifactId&gt;
-  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;groupId&gt;{{ index $mvn 0 }}&lt;/groupId&gt;
+  &lt;artifactId&gt;{{ index $mvn 1 }}&lt;/artifactId&gt;
+  &lt;version&gt;{{ index $mvn 2 }}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
       </div>
       <div class="card">

@@ -40,6 +40,8 @@ s1_znorm = znorm(series1)
 s2_znorm = znorm(series2)
 ```
 
+> **Note:** These R snippets use base R `sd()`, which divides by \(n-1\). The jMotif Java and R (`jmotif`) implementations use the **population** standard deviation (divide by \(n\), the Matrix Profile / MASS convention). For stack-identical numerics, use `sqrt(mean((ts - mean(ts))^2))` or the `jmotif` package instead of `sd()`.
+
 ### The time series after z-normalization
 
 ![The same two series after z-normalization, now almost overlapping](znormalized_data.png)

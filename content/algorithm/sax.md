@@ -82,6 +82,8 @@ ts1_znorm = znorm(ts1)
 ts2_znorm = znorm(ts2)
 ```
 
+See the [z-normalization module]({{< ref "/algorithm/znorm" >}}) for the population-\(\sigma\) convention used in the jMotif stack.
+
 ![The two series after z-normalization](sax_znorm.png)
 
 ### 3. PAA transform

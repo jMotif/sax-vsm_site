@@ -13,7 +13,7 @@ disableKinds = ["taxonomy", "term"]
   github = "https://github.com/jMotif/sax-vsm_classic"
   paper = "https://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf"
   tagline = "Interpretable time series classification"
-  maven = "net.seninp:sax-vsm:2.0.0"
+  maven = "net.seninp:sax-vsm:2.0.1"
   ogimage = "inanutshell.png"           # social-preview card image (static/images/)
   google_site_verification = "goOEDf6QeLUKZ8PbeAvNx1qvdzHrJfrnznozqJvqEOQ"
 
