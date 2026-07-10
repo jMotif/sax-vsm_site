@@ -14,6 +14,11 @@ disableKinds = ["taxonomy", "term"]
   paper = "https://csdl.ics.hawaii.edu/techreports/2011/11-09/11-09.pdf"
   tagline = "Interpretable time series classification"
   maven = "net.seninp:sax-vsm:2.0.1"
+  stack_r = "https://github.com/jMotif/jmotif-R"
+  stack_python = "https://github.com/seninp/saxpy"
+  stack_java = "https://github.com/jMotif/SAX"
+  stack_conformance = "https://github.com/jMotif/jmotif-conformance"
+  stack_grammarviz = "https://grammarviz2.github.io/grammarviz2_site/"
   ogimage = "inanutshell.png"           # social-preview card image (static/images/)
   google_site_verification = "goOEDf6QeLUKZ8PbeAvNx1qvdzHrJfrnznozqJvqEOQ"
 
@@ -49,3 +54,7 @@ disableKinds = ["taxonomy", "term"]
     name = "Classification"
     pageRef = "/classification/"
     weight = 4
+  [[menu.main]]
+    name = "Clustering"
+    pageRef = "/clustering/"
+    weight = 5
