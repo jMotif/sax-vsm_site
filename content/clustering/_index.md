@@ -68,12 +68,35 @@ System.out.println("Newick: (" + tree.toNewick() + ")");
 
 Expected on the bundled CBF train file: k-means purity **0.90**, single-linkage `partition(3)` purity **1.00** (locked in [`TestSAXVSMClustering`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/test/java/net/seninp/jmotif/cluster/TestSAXVSMClustering.java)).
 
-## 3. Lower-level API and figures
+## 3. Command-line clustering
+
+[`SAXVSMClusteringCLI`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/SAXVSMClusteringCLI.java) mirrors [`SAXVSMClassifier`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/SAXVSMClassifier.java): only **train** data is required (no test file). SAX options are the same (`-w`, `-p`, `-a`, `--strategy`, `--threshold`).
+
+| Option | Default | Meaning |
+|--------|---------|---------|
+| `-train` / `--train_data` | *(required)* | UCR-format training file |
+| `-k` / `--clusters` | `3` | Number of clusters |
+| `-m` / `--method` | `kmeans` | `kmeans` or `hierarchical` |
+| `--linkage` | `single` | `single` or `complete` (hierarchical only) |
+| `--init` | `furthest_first` | `random` or `furthest_first` (k-means only) |
+| `--seed` | `0` | k-means initialization seed |
+| `--newick_out` | — | Optional file for hierarchical Newick output |
+
+```bash
+java -cp "target/sax-vsm-2.0.1-jar-with-dependencies.jar" \
+  net.seninp.jmotif.cluster.SAXVSMClusteringCLI \
+  -train src/resources/data/cbf/CBF_TRAIN -k 3 -w 60 -p 8 -a 6 \
+  --init furthest_first --seed 2
+```
+
+Stdout ends with a summary line and per-cluster label counts, e.g. `clustering results: ... purity 0.90`. Hierarchical runs also print `newick: (...)` and accept `--newick_out`.
+
+## 4. Lower-level API and figures
 
 - **`ClusterAssignments`** — `clusterOf(id)`, `members(k)`, `labelPurity(trueLabels)`
 - **`Dendrogram`** — `toNewick()`, `partition(k)` for a greedy *k*-way cut
 - **`TextProcessor.perSeriesWordBags`** — build bags yourself if you need custom ids
 
-There is no clustering CLI yet. For publication-style figures, run [`cbf_clustering_plots.R`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/resources/RCode/cbf_clustering_plots.R) from `src/resources/RCode/` (requires [jmotif-R](https://github.com/jMotif/jmotif-R), `ggplot2`, `ggdendro`).
+For publication-style figures, run [`cbf_clustering_plots.R`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/resources/RCode/cbf_clustering_plots.R) from `src/resources/RCode/` (requires [jmotif-R](https://github.com/jMotif/jmotif-R), `ggplot2`, `ggdendro`).
 
 For supervised classification on the same data, see the [classification tutorial]({{< ref "/classification" >}}).
