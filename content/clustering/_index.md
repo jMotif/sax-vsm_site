@@ -1,47 +1,79 @@
 ---
 title: "Clustering"
 weight: 5
-summary: "Cluster time series by grouping their SAX-VSM tf·idf bags with k-means or hierarchical clustering."
+summary: "Cluster individual time series in SAX-VSM tf·idf space — CBF walkthrough with k-means and hierarchical clustering."
 ---
-SAX-VSM represents each time series as a **tf·idf-weighted bag of SAX words**. Classification assigns a label by cosine similarity to class vectors; **clustering** groups those same bags without labels — useful for exploratory views of a dataset, dendrograms, or sanity-checking whether classes separate in tf·idf space.
+Classification in SAX-VSM merges every training series of a class into **one tf·idf bag per class**. **Clustering** uses the same discretization and weighting but keeps **one bag per series**, then groups those vectors in cosine space. That is useful for exploratory views, dendrograms, or checking whether classes separate before you train a classifier.
 
-The implementation lives in [`net.seninp.jmotif.cluster`](https://github.com/jMotif/sax-vsm_classic/tree/master/src/main/java/net/seninp/jmotif/cluster) inside [sax-vsm_classic]({{< param github >}}) (`net.seninp:sax-vsm:2.0.1` on Maven Central). Distances are **cosine distance** on the sparse tf·idf vectors — the same geometry as the [classifier]({{< ref "/classification" >}}).
+The implementation is [`net.seninp.jmotif.cluster`](https://github.com/jMotif/sax-vsm_classic/tree/master/src/main/java/net/seninp/jmotif/cluster) in [sax-vsm_classic]({{< param github >}}) (`net.seninp:sax-vsm:2.0.1`). Distances are **cosine similarity** on tf·idf vectors — the same geometry as the [classifier]({{< ref "/classification" >}}).
 
-## Input format
+## 1. CBF example
 
-Both clusterers take a map `HashMap<String, HashMap<String, Double>>`:
+The [Cylinder–Bell–Funnel (CBF)](https://www.cs.ucr.edu/~eamonn/time_series_data/) benchmark is the clearest clustering demo in this stack: three distinct shapes, 100% classifier accuracy on the full test set at `-w 60 -p 8 -a 6`, and near-perfect unsupervised splits on the bundled 30-series train sample.
 
-- **outer key** — bag id (typically a time series name or index);
-- **inner map** — SAX word → tf·idf weight for that bag.
+{{< fig src="cbf_clustering_overview.png" w="900" alt="CBF clustering: single-linkage dendrogram and 3×3 grid of Cylinder, Bell, and Funnel training series" >}}
 
-Build this from training data with the same SAX parameters you would use for classification (`TextProcessor` / SAX-VSM training pipeline in the Java library).
+*Single-linkage dendrogram on per-series tf·idf (top) and training shapes (bottom). Figure from [`cbf_clustering_plots.R`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/resources/RCode/cbf_clustering_plots.R) in the Java repo.*
 
-## k-means
+### Results on bundled train subsets
 
-[`TextKMeans.cluster`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/TextKMeans.java) runs Lloyd-style k-means on the bags. Choose the number of clusters and an initial-centroid strategy (`RandomStartStrategy`, `FurthestFirstStrategy`, or a custom `StartStrategy`). The method returns `HashMap<String, List<String>>` mapping each cluster id to the bag names assigned to it.
+Same SAX parameters as the [classifier tutorial]({{< ref "/classification" >}}) (`EXACT` numerosity reduction, threshold `0.01`). **Purity** = fraction of series whose true class matches the plurality label in their cluster.
+
+| Dataset | Train series | *k* | Classifier test error | k-means purity | HC single purity (*k*-cut) |
+|---------|:------------:|:---:|----------------------:|---------------:|---------------------------:|
+| **CBF** | 30 | 3 | **0.00** (900 test) | **0.90** (furthest-first, seed 2) | **1.00** |
+| Gun_Point | 50 | 2 | **0.0133** (150 test) | **0.86** (furthest-first, seed 21) | 0.52–0.56 (root cut) |
+
+CBF separates cleanly with single-linkage hierarchical clustering and a 3-way [`partition(k)`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/Dendrogram.java) cut. Gun_Point is harder: k-means recovers most of the structure but is seed-sensitive; a naive 2-cluster cut at the dendrogram root does not match the two motion classes.
+
+## 2. Build tf·idf and cluster in Java
+
+The facade [`SAXVSMClustering`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/SAXVSMClustering.java) mirrors [`SAXVSMEvaluator`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/SAXVSMEvaluator.java): read labeled UCR data, build per-series vectors, then cluster.
+
+| Method | Role |
+|--------|------|
+| `seriesTfidf(data, params)` | One tf·idf row per series (`class:index` id); shared vocabulary |
+| `kMeans(tfidf, k, init, seed)` | Lloyd k-means on cosine similarity |
+| `hierarchical(tfidf, linkage)` | Agglomerative tree (`SINGLE` or `COMPLETE`) |
+| `seriesLabels(data)` | True class per series id (for purity) |
 
 ```java
-import net.seninp.jmotif.cluster.RandomStartStrategy;
-import net.seninp.jmotif.cluster.TextKMeans;
+import java.util.List;
+import java.util.Map;
+import net.seninp.jmotif.cluster.ClusterAssignments;
+import net.seninp.jmotif.cluster.Dendrogram;
+import net.seninp.jmotif.cluster.KMeansInit;
+import net.seninp.jmotif.cluster.Linkage;
+import net.seninp.jmotif.cluster.SAXVSMClustering;
+import net.seninp.jmotif.sax.NumerosityReductionStrategy;
+import net.seninp.jmotif.text.Params;
+import net.seninp.util.UCRUtils;
 
-HashMap<String, List<String>> clusters = TextKMeans.cluster(tfidf, 3, new RandomStartStrategy());
+Map<String, List<double[]>> train =
+    UCRUtils.readUCRData("src/resources/data/cbf/CBF_TRAIN");
+Params params = new Params(60, 8, 6, 0.01, NumerosityReductionStrategy.EXACT);
+
+Map<String, Map<String, Double>> tfidf = SAXVSMClustering.seriesTfidf(train, params);
+Map<String, String> labels = SAXVSMClustering.seriesLabels(train);
+
+ClusterAssignments km =
+    SAXVSMClustering.kMeans(tfidf, 3, KMeansInit.FURTHEST_FIRST, 2L);
+System.out.printf("k-means purity: %.2f%n", km.labelPurity(labels));
+
+Dendrogram tree = SAXVSMClustering.hierarchical(tfidf, Linkage.SINGLE);
+ClusterAssignments hc = tree.partition(3);
+System.out.printf("HC purity: %.2f%n", hc.labelPurity(labels));
+System.out.println("Newick: (" + tree.toNewick() + ")");
 ```
 
-## Hierarchical clustering
+Expected on the bundled CBF train file: k-means purity **0.90**, single-linkage `partition(3)` purity **1.00** (locked in [`TestSAXVSMClustering`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/test/java/net/seninp/jmotif/cluster/TestSAXVSMClustering.java)).
 
-[`HC.Hc`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/HC.java) builds an agglomerative hierarchy over the bags using a precomputed cosine-distance matrix. Pass a [`LinkageCriterion`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/LinkageCriterion.java) (`SINGLE`, `COMPLETE`, `UPGMA`, and others). The result is a [`Cluster`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/main/java/net/seninp/jmotif/cluster/Cluster.java) tree; call `toNewick()` to export a Newick dendrogram string for external viewers.
+## 3. Lower-level API and figures
 
-```java
-import net.seninp.jmotif.cluster.Cluster;
-import net.seninp.jmotif.cluster.HC;
-import net.seninp.jmotif.cluster.LinkageCriterion;
+- **`ClusterAssignments`** — `clusterOf(id)`, `members(k)`, `labelPurity(trueLabels)`
+- **`Dendrogram`** — `toNewick()`, `partition(k)` for a greedy *k*-way cut
+- **`TextProcessor.perSeriesWordBags`** — build bags yourself if you need custom ids
 
-Cluster tree = HC.Hc(tfidf, LinkageCriterion.COMPLETE);
-String newick = "(" + tree.toNewick() + ")";
-```
+There is no clustering CLI yet. For publication-style figures, run [`cbf_clustering_plots.R`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/resources/RCode/cbf_clustering_plots.R) from `src/resources/RCode/` (requires [jmotif-R](https://github.com/jMotif/jmotif-R), `ggplot2`, `ggdendro`).
 
-## Example in the source tree
-
-[`TestTextKMeans`](https://github.com/jMotif/sax-vsm_classic/blob/master/src/test/java/net/seninp/jmotif/cluster/TestTextKMeans.java) runs both k-means and hierarchical clustering on a small synthetic tf·idf map and writes a Newick file. Unit tests in the same package cover linkage and centroid updates.
-
-There is no dedicated CLI entry point for clustering yet — call the classes from Java, or build bags in Python/R and cluster in Java if you need the exact SAX-VSM weighting.
+For supervised classification on the same data, see the [classification tutorial]({{< ref "/classification" >}}).
