@@ -204,7 +204,7 @@ pre code { background: none; padding: 0; color: inherit; }
 a.card { color: inherit; }
 a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent); }
 .card .num { font-family: var(--mono); font-size: .72rem; color: var(--accent-d); letter-spacing: .12em; }
-.card h3 { margin: 0; font-size: 1.12rem; color: var(--ink); }
+.card h2, .card h3 { margin: 0; font-size: 1.12rem; color: var(--ink); }
 .card p { margin: 0; font-size: .96rem; color: var(--muted); line-height: 1.5; }
 .card .tags { margin-top: auto; padding-top: .6rem; display: flex; gap: .4rem; flex-wrap: wrap; }
 .tag { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); background: var(--panel); padding: .2em .5em; border-radius: 3px; }

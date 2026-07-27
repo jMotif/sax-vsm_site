@@ -1,5 +1,5 @@
 ---
-title: "Cosine similarity"
+title: "Cosine similarity for time series classification"
 weight: 7
 pagekind: "reading"
 summary: "The angle-based similarity measure that scores an unlabeled time series against each class's tf·idf weight vector."

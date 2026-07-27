@@ -1,5 +1,5 @@
 ---
-title: "Z-normalization"
+title: "Z-normalization of time series"
 weight: 1
 pagekind: "reading"
 summary: "Why and how time series are standardized to zero mean and unit variance before discretization."

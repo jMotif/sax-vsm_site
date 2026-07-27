@@ -1,7 +1,8 @@
 ---
-title: "Clustering"
+title: "Time series clustering with SAX-VSM"
 weight: 5
 summary: "Cluster individual time series in SAX-VSM tf·idf space — CBF walkthrough with k-means and hierarchical clustering."
+ogimage: "cbf_clustering_overview.png"
 ---
 Classification in SAX-VSM merges every training series of a class into **one tf·idf bag per class**. **Clustering** uses the same discretization and weighting but keeps **one bag per series**, then groups those vectors in cosine space. That is useful for exploratory views, dendrograms, or checking whether classes separate before you train a classifier.
 

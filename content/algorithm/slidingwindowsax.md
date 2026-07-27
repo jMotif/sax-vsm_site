@@ -8,15 +8,15 @@ labels:
 ---
 ## Definitions
 
-#### Time series
+### Time series
 
 A time series \(T = t_{1},\dots,t_{m}\) is a set of scalar observations ordered by time. Since we focus on the detection of patterns that are likely to be local features, we consider short subsections of the time series called subsequences:
 
-#### Subsequence
+### Subsequence
 
 A subsequence \(C\) of time series \(T\) is a contiguous sampling \(t_{p},\dots,t_{p+n-1}\) of points of length \(n \ll m\), where \(p\) is an arbitrary position such that \( 1 \leq p \leq m - n + 1\). Typically subsequences are extracted from a time series with a sliding window:
 
-#### Sliding window
+### Sliding window
 
 For a time series \(T\) of length \(m\) and a user-defined subsequence length \(n\), all \(m - n + 1\) subsequences of \(T\) can be found by sliding a window of size \(n\) across \(T\).
 
