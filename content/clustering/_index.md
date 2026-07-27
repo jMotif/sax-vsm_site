@@ -5,7 +5,7 @@ summary: "Cluster individual time series in SAX-VSM tf·idf space — CBF walkth
 ---
 Classification in SAX-VSM merges every training series of a class into **one tf·idf bag per class**. **Clustering** uses the same discretization and weighting but keeps **one bag per series**, then groups those vectors in cosine space. That is useful for exploratory views, dendrograms, or checking whether classes separate before you train a classifier.
 
-The implementation is [`net.seninp.jmotif.cluster`](https://github.com/jMotif/sax-vsm_classic/tree/master/src/main/java/net/seninp/jmotif/cluster) in [sax-vsm_classic]({{< param github >}}) (`net.seninp:sax-vsm:2.0.1`). Distances are **cosine similarity** on tf·idf vectors — the same geometry as the [classifier]({{< ref "/classification" >}}).
+The implementation is [`net.seninp.jmotif.cluster`](https://github.com/jMotif/sax-vsm_classic/tree/master/src/main/java/net/seninp/jmotif/cluster) in [sax-vsm_classic]({{< param github >}}) (`net.seninp:sax-vsm:2.1.0`). Distances are **cosine similarity** on tf·idf vectors — the same geometry as the [classifier]({{< ref "/classification" >}}).
 
 ## 1. CBF example
 
@@ -83,7 +83,7 @@ Expected on the bundled CBF train file: k-means purity **0.90**, single-linkage 
 | `--newick_out` | — | Optional file for hierarchical Newick output |
 
 ```bash
-java -cp "target/sax-vsm-2.0.1-jar-with-dependencies.jar" \
+java -cp "target/sax-vsm-2.1.0-jar-with-dependencies.jar" \
   net.seninp.jmotif.cluster.SAXVSMClusteringCLI \
   -train src/resources/data/cbf/CBF_TRAIN -k 3 -w 60 -p 8 -a 6 \
   --init furthest_first --seed 2

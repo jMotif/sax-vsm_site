@@ -4,8 +4,6 @@
    Subject: turning a continuous signal into discrete symbol bands.
    ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
-
 :root {
   /* neutrals — cool plotting paper, faint graph grid */
   --ink:    #15181e;

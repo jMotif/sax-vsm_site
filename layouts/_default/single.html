@@ -14,8 +14,8 @@
       <article class="doc-body">
         {{ .Content }}
         <div class="pager">
-          {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
-          {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
+          {{ with .NextInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+          {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
         </div>
       </article>
       {{ with .TableOfContents }}

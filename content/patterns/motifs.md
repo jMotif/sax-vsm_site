@@ -8,7 +8,7 @@ summary: "Finding recurrent patterns (motifs) and discords in a time series with
 
 This example uses a dataset derived from the [PhysioNet QT Database](https://physionet.org/content/qtdb/1.0.0/) — a 2,299-point excerpt of the `sele0606` ECG Holter recording (the same segment used throughout the [GrammarViz tutorials](https://grammarviz2.github.io/grammarviz2_site/), available as [`ecg0606_1.csv`](https://github.com/GrammarViz2/grammarviz2_src/blob/master/data/ecg0606_1.csv)).
 
-The SAX-based motif and discord machinery lives in the [jmotif-sax library](https://github.com/jMotif/SAX) (`net.seninp:jmotif-sax:2.0.1` on Maven Central, and the SAX layer underneath SAX-VSM). Motifs are found with the EMMA algorithm, discords with HOT-SAX:
+The SAX-based motif and discord machinery lives in the [jmotif-sax library](https://github.com/jMotif/SAX) (`net.seninp:jmotif-sax:2.0.2` on Maven Central, and the SAX layer underneath SAX-VSM). Motifs are found with the EMMA algorithm, discords with HOT-SAX:
 
 ```java
 import net.seninp.jmotif.sax.NumerosityReductionStrategy;
@@ -48,4 +48,4 @@ Note that EMMA reports each occurrence once per matching subsequence; with a sli
 
 For *variable-length* motif and discord discovery — where pattern lengths are not fixed in advance — see the grammar-inference approach in [GrammarViz](https://grammarviz2.github.io/grammarviz2_site/), the sibling project of SAX-VSM.
 
-> Historical note: this walkthrough originally targeted the retired jMotif Google Code project and its `SAXFactory.seriesToDiscordsAndMotifs` API; the example above uses the current [jmotif-sax](https://github.com/jMotif/SAX) API and was verified against version 2.0.1.
+> Historical note: this walkthrough originally targeted the retired jMotif Google Code project and its `SAXFactory.seriesToDiscordsAndMotifs` API; the example above uses the current [jmotif-sax](https://github.com/jMotif/SAX) API and was verified against version 2.0.1; the motif/discord API is unchanged in 2.0.2.

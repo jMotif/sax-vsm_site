@@ -1,12 +1,12 @@
 ---
-title: "tf·idf statistics"
+title: "TF-IDF weighting for time series (tf·idf)"
 weight: 6
 pagekind: "reading"
 summary: "How term frequency and inverse document frequency turn per-class bags of SAX words into class-characteristic weight vectors."
 labels:
   - algorithm
 ---
-We use the vector space model exactly as it is known in Information Retrieval (Salton). Accordingly, we define and use the following terms: a _term_ is a single SAX word, a _bag of words_ is an unordered collection of SAX words, a _corpus_ is a set of bags, and the _weight matrix_ defines the weights of all words in a corpus.
+We use the vector space model with TF-IDF (term frequency–inverse document frequency) weighting exactly as it is known in Information Retrieval (Salton). Accordingly, we define and use the following terms: a _term_ is a single SAX word, a _bag of words_ is an unordered collection of SAX words, a _corpus_ is a set of bags, and the _weight matrix_ defines the weights of all words in a corpus.
 
 Given a training set, SAX-VSM builds a bag of SAX words for each class by processing every input time series with sliding window-based SAX discretization. The bags are combined into a corpus represented as a _term frequency matrix_: its rows correspond to the set of all SAX words (terms) found in _all classes_, and each column denotes one class of the training set. Each element of this matrix is the observed frequency of a term in a class. Because SAX words extracted from one class's time series are often absent from the others, this matrix is usually sparse.
 
